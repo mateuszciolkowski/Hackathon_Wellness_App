@@ -74,5 +74,9 @@ def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
     }
 
 
+#do tworzenia wpisu potrzeba
 #akltualna data wpisu 
 #tresc
+#userid / username
+#
+#jak wyslemy do bazy to returnujemy potweirdzenie
