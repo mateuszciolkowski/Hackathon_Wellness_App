@@ -1,15 +1,14 @@
 .home-page {
   flex: 1;
-  padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: white;
+  min-height: calc(100vh - 60px);
 }
 
 .welcome-content {
   text-align: center;
-  max-width: 1200px;
 }
 
 .welcome-content h1 {
@@ -20,7 +19,6 @@
 .welcome-content p {
   color: #666;
   font-size: 1.2rem;
-  margin-bottom: 3rem;
 }
 
 .features {
