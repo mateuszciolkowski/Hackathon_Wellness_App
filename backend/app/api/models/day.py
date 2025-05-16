@@ -14,3 +14,6 @@ class Day(Base):
     
     diary = relationship("Diary", back_populates="days")
     questions_answers = relationship("QuestionAnswer", back_populates="day", cascade="all, delete")
+
+
+    
