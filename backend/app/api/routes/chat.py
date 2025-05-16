@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import openai
 import os
 from dotenv import load_dotenv
+import time
 
 # Załaduj zmienne środowiskowe
 load_dotenv()
@@ -19,8 +20,9 @@ class ChatResponse(BaseModel):
 @router.post("/send", response_model=ChatResponse)
 async def send_message(message: ChatMessage):
     try:
+        time.sleep(1)  # Dodaj 1 sekundę opóźnienia
         completion = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "Jesteś pomocnym asystentem."},
                 {"role": "user", "content": message.prompt}
