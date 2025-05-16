@@ -23,9 +23,9 @@ app.add_middleware(
 )
 
 # Podpinamy routery
-app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
-app.include_router(diaries.router, prefix="/api/v1/diaries", tags=["diaries"])
-app.include_router(days.router, prefix="/api/v1/days", tags=["days"])
+app.include_router(users.router, prefix="/api/users", tags=["users"])
+app.include_router(diaries.router, prefix="/api/diaries", tags=["diaries"])
+app.include_router(days.router, prefix="/api/days", tags=["days"])
 
 @app.get("/")
 def read_root():
@@ -33,4 +33,4 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="127.0.0.1", port=3000)
