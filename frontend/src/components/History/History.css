@@ -97,6 +97,24 @@
   margin-top: 0.5rem;
 }
 
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  color: #ff4444;
+}
+
+.entry-rating {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
