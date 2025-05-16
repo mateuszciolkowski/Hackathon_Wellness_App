@@ -172,3 +172,33 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+# Backend (FastAPI / Python)
+backend/__pycache__/
+backend/*.py[cod]
+backend/env/
+backend/.env
+backend/.venv/
+backend/venv/
+backend/.mypy_cache/
+backend/.pytest_cache/
+backend/cython_debug/
+backend/.pdm.toml
+backend/.pdm-python
+backend/.pdm-build/
+backend/.ruff_cache/
+backend/.pytype/
+backend/.pyre/
+
+# Frontend (React.js)
+frontend/node_modules/
+frontend/.env
+frontend/.next/
+frontend/.turbo/
+frontend/.cache/
+frontend/.eslintcache
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/package-lock.json
+frontend/pnpm-lock.yaml
+frontend/.DS_Store
