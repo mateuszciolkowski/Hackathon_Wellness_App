@@ -25,9 +25,9 @@ function Navbar({ onComponentChange }) {
         </button>
         <button 
           className="nav-button green" 
-          onClick={() => onComponentChange('exercises')}
+          onClick={() => onComponentChange('history')}
         >
-          Ćwiczenia
+          Moje wpisy
         </button>
       </div>
     </nav>

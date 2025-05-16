@@ -2,6 +2,7 @@ import React from 'react';
 import './MainContent.css';
 import Diary from '../Diary/Diary';
 import User from '../User/User';
+import History from '../History/History';
 
 function MainContent({ activeComponent }) {
   const renderComponent = () => {
@@ -10,13 +11,8 @@ function MainContent({ activeComponent }) {
         return <div className="diary-section"><Diary /></div>;
       case 'user':
         return <div className="user-section"><User /></div>;
-      case 'exercises':
-        return (
-          <div className="exercises-section">
-            <h2>Ćwiczenia</h2>
-            <p>Tutaj będzie zawartość sekcji ćwiczeń</p>
-          </div>
-        );
+      case 'history':
+        return <div className="history-section"><History /></div>;
       default:
         return (
           <div className="welcome-section">
