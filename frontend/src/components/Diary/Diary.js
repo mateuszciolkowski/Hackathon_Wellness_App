@@ -21,7 +21,7 @@ function Diary() {
   return (
     <div className="diary">
       <div className="diary-header">
-        <h1>Mój Dziennik</h1>
+        <h1>Mój Pamiętnik</h1>
         <p>Miejsce na Twoje przemyślenia i refleksje</p>
       </div>
       

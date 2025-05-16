@@ -15,13 +15,13 @@ function Navbar({ onComponentChange }) {
           className="nav-button pink" 
           onClick={() => onComponentChange('diary')}
         >
-          Dziennik
+          Nowy wpis
         </button>
         <button 
           className="nav-button orange" 
-          onClick={() => onComponentChange('meditation')}
+          onClick={() => onComponentChange('user')}
         >
-          Medytacja
+          Użytkownik
         </button>
         <button 
           className="nav-button green" 
