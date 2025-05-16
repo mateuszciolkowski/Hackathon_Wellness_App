@@ -1,25 +1,17 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional
-from openai import OpenAI
+import openai
 import os
 from dotenv import load_dotenv
 
-# Wczytanie zmiennych środowiskowych z .env
+# Załaduj zmienne środowiskowe
 load_dotenv()
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 router = APIRouter()
 
-# Wczytanie zmiennych środowiskowych z .env (jeśli używasz python-dotenv)
-# from dotenv import load_dotenv
-# load_dotenv()
-
-
 class ChatMessage(BaseModel):
-    message: str
-    user_id: Optional[int] = None
+    prompt: str
 
 class ChatResponse(BaseModel):
     response: str
@@ -27,12 +19,17 @@ class ChatResponse(BaseModel):
 @router.post("/send", response_model=ChatResponse)
 async def send_message(message: ChatMessage):
     try:
-        response = client.chat.completions.create(model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Jesteś pomocnym asystentem."},
-            {"role": "user", "content": message.message}
-        ])
-        ai_response = response.choices[0].message.content
+        completion = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "Jesteś pomocnym asystentem."},
+                {"role": "user", "content": message.prompt}
+            ]
+        )
+        ai_response = completion.choices[0].message.content
         return ChatResponse(response=ai_response)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Błąd podczas komunikacji z ChatGPT: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Błąd podczas komunikacji z OpenAI: {str(e)}"
+        )

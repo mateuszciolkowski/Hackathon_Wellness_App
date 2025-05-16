@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import users, diaries, days, chat
-from app.database import engine, Base
+from app.db.session import engine, Base  # Zmieniony import
 import logging
 
 logger = logging.getLogger(__name__)
