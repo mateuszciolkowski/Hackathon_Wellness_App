@@ -1,19 +1,15 @@
 import React from 'react';
 import './MainContent.css';
 import Diary from '../Diary/Diary';
+import User from '../User/User';
 
 function MainContent({ activeComponent }) {
   const renderComponent = () => {
     switch (activeComponent) {
       case 'diary':
-        return <Diary />;
-      case 'meditation':
-        return (
-          <div className="meditation-section">
-            <h2>Medytacja</h2>
-            <p>Tutaj będzie zawartość sekcji medytacji</p>
-          </div>
-        );
+        return <div className="diary-section"><Diary /></div>;
+      case 'user':
+        return <div className="user-section"><User /></div>;
       case 'exercises':
         return (
           <div className="exercises-section">
