@@ -10,6 +10,7 @@ class Day(Base):
     diary_id = Column(Integer, ForeignKey("diaries.id", ondelete="CASCADE"), nullable=False)
     main_entry = Column(Text)
     created_at = Column(Date, default=date.today)
-
+    day_rating = Column(Integer) 
+    
     diary = relationship("Diary", back_populates="days")
     questions_answers = relationship("QuestionAnswer", back_populates="day", cascade="all, delete")
