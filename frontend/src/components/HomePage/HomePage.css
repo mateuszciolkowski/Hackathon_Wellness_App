@@ -606,3 +606,100 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.5);
 }
+
+.logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  width: 100%;
+  margin-top: 3rem;  /* Dodajemy margines od góry */
+  padding-top: 2rem; /* Dodajemy padding od góry */
+  margin-bottom: 2rem;  /* Dodajemy margines od dołu */
+  padding-bottom: 2rem;  /* Dodajemy padding od dołu */;
+}
+
+.animation-container {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  z-index: 0;
+}
+
+.brand-name {
+  position: relative;
+  z-index: 1;
+  font-family: 'Dancing Script', cursive;
+  font-size: 4rem;
+  color: #FF69B4;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  animation: fadeInScale 1.5s ease-out, pulseSize 4s ease-in-out infinite;
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: -20px;
+}
+
+@keyframes pulseSize {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scroll-to-top-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid #FFB6C1;
+  color: #333;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.scroll-to-top-button:hover {
+  transform: translateY(-5px);
+  background-color: #FFB6C1;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-to-top-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.5);
+}
