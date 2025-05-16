@@ -7,7 +7,7 @@ import os
 router = APIRouter()
 
 # Konfiguracja OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY", "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")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class ChatMessage(BaseModel):
     message: str
