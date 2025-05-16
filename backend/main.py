@@ -13,10 +13,26 @@ try:
 except Exception as e:
     logger.error(f"Błąd podczas tworzenia tabel: {str(e)}")
 
+
+
 app = FastAPI(
     title="Diary API",
     description="API do zarządzania dziennikiem",
     version="1.0.0"
+)
+
+origins = [
+    "http://localhost:3000/",
+    "http://127.0.0.1:3000/",
+    "*"  # UWAGA: pozwala na wszystko (OK w dev, nie w produkcji)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,            # Skąd można się łączyć
+    allow_credentials=True,
+    allow_methods=[""],              # Jakie metody są dozwolone (GET, POST, itd.)
+    allow_headers=[""],              # Jakie nagłówki są dozwolone (np. Authorization)
 )
 
 # Konfiguracja CORS
