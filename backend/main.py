@@ -37,11 +37,12 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://tg4n8lh6-8000.euw.devtunnels.ms",  # ← dodaj DevTunnel jako origin
-    ],
+    allow_origins=["*"],
+    # allow_origins=[
+    #     "http://localhost:3000",
+    #     "http://127.0.0.1:3000",
+    #     "https://tg4n8lh6-8000.euw.devtunnels.ms",  # ← dodaj DevTunnel jako origin
+    # ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,4 +61,4 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=3000)
+    uvicorn.run(app, host="0.0.0.0", port=3000)
