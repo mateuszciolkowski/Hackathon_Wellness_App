@@ -1,0 +1,41 @@
+-- Dodajemy użytkowników
+INSERT INTO users (name, nickname, email, password_hash, birth_year) VALUES
+('Anna Kowalska', 'annka', 'anna.k@example.com', 'hash1', 1990),
+('Michał Nowak', 'michalN', 'michal.n@example.com', 'hash2', 1985),
+('Katarzyna Wiśniewska', 'kasiaW', 'kasia.w@example.com', 'hash3', 1992);
+
+-- Dodajemy dzienniki (jeden na użytkownika)
+INSERT INTO diaries (user_id) VALUES
+(1),
+(2),
+(3);
+
+-- Dodajemy dni do dzienników (np. 2 dni na każdy dziennik)
+INSERT INTO days (diary_id, main_entry) VALUES
+(1, 'Dzień pełen nowych wyzwań i pozytywnych emocji.'),
+(1, 'Trochę stresujący dzień, ale udało się wyciszyć.'),
+(2, 'Spotkanie z przyjaciółmi poprawiło mi humor.'),
+(2, 'Praca nad projektem szła zgodnie z planem.'),
+(3, 'Czas na odpoczynek i refleksję.'),
+(3, 'Zacząłem nowy kurs online – jestem podekscytowana!');
+
+-- Dodajemy pytania i odpowiedzi do dni (po 2 pytania na dzień)
+INSERT INTO questions_answers (day_id, question, answer) VALUES
+(1, 'Jak się dziś czułeś?', 'Byłem pełen energii.'),
+(1, 'Co sprawiło Ci radość?', 'Spacer w parku.'),
+(2, 'Co było wyzwaniem?', 'Zarządzanie czasem.'),
+(2, 'Jak się zrelaksowałeś?', 'Medytacja.'),
+(3, 'Co najbardziej zapamiętałeś z dnia?', 'Śmiech przyjaciół.'),
+(3, 'Czy coś Cię zaskoczyło?', 'Tak, niespodziewana wiadomość.'),
+(4, 'Co udało się zrobić?', 'Ukończyłem ważny etap projektu.'),
+(4, 'Jak planujesz jutro?', 'Zrobić podsumowanie tygodnia.'),
+(5, 'Co najbardziej Cię uspokoiło?', 'Czytanie książki.'),
+(5, 'Czy miałeś chwilę dla siebie?', 'Tak, wieczorny spacer.'),
+(6, 'Jakie nowe rzeczy się nauczyłeś?', 'Podstawy programowania w Pythonie.'),
+(6, 'Co najbardziej Cię motywuje?', 'Chęć rozwoju.');
+
+-- Dodajemy avatary powiązane z dziennikami
+INSERT INTO avatars (diary_id) VALUES
+(1),
+(2),
+(3);
