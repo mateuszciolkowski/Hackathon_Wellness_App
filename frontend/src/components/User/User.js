@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './User.css';
+import { ENDPOINTS } from '../../config';
 
 function User() {
-  // Przykładowe dane użytkownika (w przyszłości można zastąpić danymi z API/bazy danych)
-  const userData = {
-    imie: "Jan",
-    nazwisko: "Kowalski",
-    email: "jan.kowalski@example.com",
-    dataRejestracji: "01.01.2024"
-  };
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleGenerateReport = () => {
-    // Tutaj w przyszłości będzie logika generowania raportu
-    console.log("Generowanie raportu...");
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(ENDPOINTS.GET_USER);
+        setUserData(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Nie udało się pobrać danych użytkownika. Spróbuj ponownie później.');
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (loading) return <div className="loading">Ładowanie danych użytkownika...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!userData) return null;
 
   return (
     <div className="user-container">
@@ -23,30 +35,21 @@ function User() {
       
       <div className="user-info">
         <div className="info-group">
-          <label>Imię:</label>
-          <span>{userData.imie}</span>
+          <label>Imię i Nazwisko:</label>
+          <span>{userData.name}</span>
         </div>
         <div className="info-group">
-          <label>Nazwisko:</label>
-          <span>{userData.nazwisko}</span>
+          <label>Nickname:</label>
+          <span>{userData.nickname}</span>
         </div>
         <div className="info-group">
           <label>Email:</label>
           <span>{userData.email}</span>
         </div>
         <div className="info-group">
-          <label>Data rejestracji:</label>
-          <span>{userData.dataRejestracji}</span>
+          <label>Rok urodzenia:</label>
+          <span>{userData.birth_year}</span>
         </div>
-      </div>
-
-      <div className="user-actions">
-        <button 
-          className="report-button"
-          onClick={handleGenerateReport}
-        >
-          Generuj Raport Aktywności
-        </button>
       </div>
     </div>
   );
