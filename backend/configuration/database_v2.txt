@@ -1,0 +1,42 @@
+ 
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    nickname VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    birth_year INT NOT NULL
+);
+
+
+CREATE TABLE diaries (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE days (
+    id SERIAL PRIMARY KEY,
+    diary_id INT NOT NULL,
+    main_entry TEXT,
+    created_at DATE DEFAULT CURRENT_DATE,
+    day_rating INT CHECK (day_rating >= 0 AND day_rating <= 100),
+    FOREIGN KEY (diary_id) REFERENCES diaries(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE questions_answers (
+    id SERIAL PRIMARY KEY,
+    day_id INT NOT NULL,
+    question TEXT NOT NULL,
+    answer TEXT,
+    FOREIGN KEY (day_id) REFERENCES days(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE avatars (
+    id SERIAL PRIMARY KEY,
+    diary_id INT NOT NULL UNIQUE,
+    FOREIGN KEY (diary_id) REFERENCES diaries(id) ON DELETE CASCADE
+);
