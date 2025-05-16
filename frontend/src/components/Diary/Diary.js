@@ -23,7 +23,7 @@ function Diary() {
         day_rating: 50 // Możesz dodać pole do oceny dnia w formularzu
       };
 
-      const response = await axios.post(ENDPOINTS.CREATE_DAY, entryData);
+      const response = await axios.post('/api/da', entryData);
       
       const entry = {
         id: response.data.id,
