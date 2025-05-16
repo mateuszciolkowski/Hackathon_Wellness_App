@@ -3,16 +3,19 @@ import './App.css';
 import HomePage from './components/HomePage/HomePage';
 import TopNav from './components/TopNav/TopNav';
 import MainMenu from './components/MainMenu/MainMenu';
+import Navbar from './components/Navbar/Navbar';
+import MainContent from './components/MainContent/MainContent';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [activeComponent, setActiveComponent] = useState(null);
 
   return (
     <div className="App">
       {isLoggedIn ? (
         <>
-          <MainMenu />
-          <HomePage />
+          <Navbar onComponentChange={setActiveComponent} />
+          <MainContent activeComponent={activeComponent} />
         </>
       ) : (
         <>

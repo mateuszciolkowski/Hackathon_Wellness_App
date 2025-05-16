@@ -1,13 +1,16 @@
 .navbar {
-  background-color: white;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-icons {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
+  margin-left: auto;
 }
 
 .nav-button {
@@ -17,6 +20,11 @@
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s;
+}
+
+.nav-button.home {
+  background-color: #4a90e2;
+  color: white;
 }
 
 .nav-button:hover {
