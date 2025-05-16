@@ -20,8 +20,11 @@ function HomePage() {
   return (
     <div className="home-page">
       <div className="welcome-content">
-        <div className="animation-container">
-          <div className="circle-animation"></div>
+        <div className="logo-container">
+          <div className="animation-container">
+            <div className="circle-animation"></div>
+          </div>
+          <div className="brand-name">Wellness</div>
         </div>
         <h1>Twoje miejsce spokoju i rozwoju</h1>
         <p>Zadbaj o swój wewnętrzny spokój i harmonię</p>
