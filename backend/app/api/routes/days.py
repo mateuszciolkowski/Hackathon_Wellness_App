@@ -58,13 +58,15 @@ router = APIRouter()
 def create_day_entry(day_data: DayCreate, db: Session = Depends(get_db)):
     logger.info(f"Próba utworzenia wpisu dnia: {day_data}")
     
-    diary = db.query(Diary).filter(Diary.id == day_data.diary_id).first()
+    # Znajdź dziennik użytkownika
+    diary = db.query(Diary).filter(Diary.user_id == day_data.user_id).first()
     if not diary:
-        logger.warning(f"Dziennik o ID {day_data.diary_id} nie został znaleziony.")
-        raise HTTPException(status_code=404, detail="Dziennik nie znaleziony")
+        logger.warning(f"Nie znaleziono dziennika dla użytkownika o ID {day_data.user_id}")
+        raise HTTPException(status_code=404, detail="Nie znaleziono dziennika dla tego użytkownika")
     
+    # Utwórz nowy wpis
     db_day = Day(
-        diary_id=day_data.diary_id,
+        diary_id=diary.id,  # Używamy ID znalezionego dziennika
         main_entry=day_data.main_entry,
         day_rating=day_data.day_rating
     )
@@ -101,4 +103,24 @@ def read_days_by_date(date: date, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Nie znaleziono wpisów dla podanej daty")
     
     logger.info(f"Znaleziono {len(days)} wpisów z dnia {date}")
+    return days
+
+#endpoint dla zapytania o wszystkie dni z pamietnika z danego użytkownika - frontend przekazuje iduzytkownika
+@router.get("/by-user/{user_id}", response_model=List[DayResponse])
+def read_days_by_user(user_id: int, db: Session = Depends(get_db)):
+    logger.info(f"Żądanie odczytu wpisów dla użytkownika o ID: {user_id}")
+
+    # Pobierz wszystkie diaries użytkownika
+    diaries = db.query(Diary).filter(Diary.user_id == user_id).all()
+
+    # Pobierz wszystkie dni dla każdego diarie
+    days = []
+    for diary in diaries:
+        days.extend(db.query(Day).filter(Day.diary_id == diary.id).all())
+
+    if not days:
+        logger.warning(f"Nie znaleziono wpisów dla użytkownika o ID {user_id}")
+        raise HTTPException(status_code=404, detail="Nie znaleziono wpisów dla podanego użytkownika")
+
+    logger.info(f"Znaleziono {len(days)} wpisów dla użytkownika o ID {user_id}")
     return days

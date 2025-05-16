@@ -7,8 +7,10 @@ class DayBase(BaseModel):
     main_entry: str
     day_rating: int | None = Field(None, ge=0, le=100)  # Dodajemy walidację zakresu
 
-class DayCreate(DayBase):
-    pass
+class DayCreate(BaseModel):
+    user_id: int
+    main_entry: str
+    day_rating: int | None = None
 
 class DayResponse(DayBase, BaseSchema):
     id: int
