@@ -1,22 +1,60 @@
 .main-content {
   flex: 1;
   padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: white;
 }
 
 .welcome-section {
   text-align: center;
-  max-width: 800px;
+  padding: 4rem 2rem;
+  animation: fadeIn 1s ease-in;
 }
 
 .welcome-section h1 {
   color: #333;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
 .welcome-section p {
   color: #666;
   font-size: 1.2rem;
+}
+
+.diary-section,
+.user-section,
+.exercises-section {
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fadeIn 1s ease-in;
+}
+
+.exercises-section {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.exercises-section h2 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.exercises-section p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
