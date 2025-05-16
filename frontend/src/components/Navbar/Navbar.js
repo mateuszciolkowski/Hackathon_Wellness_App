@@ -29,6 +29,12 @@ function Navbar({ onComponentChange }) {
         >
           Moje wpisy
         </button>
+        <button 
+          className="nav-button blue" alt="AI"
+          onClick={() => onComponentChange('aiHandler')} // Poprawka tutaj
+        >
+          AI Obsługa
+        </button>
       </div>
     </nav>
   );
