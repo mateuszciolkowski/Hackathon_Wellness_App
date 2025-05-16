@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 import HomePage from './components/HomePage/HomePage';
 import TopNav from './components/TopNav/TopNav';
-import MainMenu from './components/MainMenu/MainMenu';
 import Navbar from './components/Navbar/Navbar';
 import MainContent from './components/MainContent/MainContent';
 
