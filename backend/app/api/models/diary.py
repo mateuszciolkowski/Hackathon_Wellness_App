@@ -10,4 +10,4 @@ class Diary(Base):
 
     user = relationship("User", back_populates="diaries")
     days = relationship("Day", back_populates="diary", cascade="all, delete")
-    avatar = relationship("Avatar", back_populates="diary", uselist=False, cascade="all, delete")
+    avatar = relationship("Avatar", back_populates="diary", uselist=False, cascade="all, delete", lazy="joined")
