@@ -20,4 +20,4 @@ def read_day(day_id: int, db: Session = Depends(get_db)):
     day = db.query(Day).filter(Day.id == day_id).first()
     if day is None:
         raise HTTPException(status_code=404, detail="Dzień nie znaleziony")
-    return day
+    return dayx
