@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import users, diaries, days
+from app.api.routes import users, diaries, days, chat
 from app.database import engine, Base
 import logging
 
@@ -32,6 +32,7 @@ app.add_middleware(
 app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(diaries.router, prefix="/api/diaries", tags=["diaries"])
 app.include_router(days.router, prefix="/api/days", tags=["days"])
+app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 
 @app.get("/")
 def read_root():
