@@ -1,11 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import users, diaries, days
-from app.core.database import engine
-from app.api.models.base import Base
+from app.database import engine, Base
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Tworzymy wszystkie tabele w bazie danych
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+    logger.info("Tabele zostały utworzone pomyślnie")
+except Exception as e:
+    logger.error(f"Błąd podczas tworzenia tabel: {str(e)}")
 
 app = FastAPI(
     title="Diary API",
