@@ -27,22 +27,26 @@ origins = [
     "*"  # UWAGA: pozwala na wszystko (OK w dev, nie w produkcji)
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,            # Skąd można się łączyć
-    allow_credentials=True,
-    allow_methods=[""],              # Jakie metody są dozwolone (GET, POST, itd.)
-    allow_headers=[""],              # Jakie nagłówki są dozwolone (np. Authorization)
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,            # Skąd można się łączyć
+#     allow_credentials=True,
+#     allow_methods=["*"],              # Jakie metody są dozwolone (GET, POST, itd.)
+#     allow_headers=["*"],              # Jakie nagłówki są dozwolone (np. Authorization)
+# )
 
-# Konfiguracja CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://tg4n8lh6-8000.euw.devtunnels.ms",  # ← dodaj DevTunnel jako origin
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Podpinamy routery
 app.include_router(users.router, prefix="/api/users", tags=["users"])
