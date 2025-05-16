@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, Date
 from sqlalchemy.orm import relationship
-from app.db.session import get_db, Base
+from app.db.session import Base
+
 # Importujemy wszystkie modele bezpośrednio
 from app.api.models.avatar import Avatar
 from app.api.models.day import Day
