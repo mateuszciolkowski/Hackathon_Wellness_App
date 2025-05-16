@@ -21,3 +21,4 @@ def read_diary(diary_id: int, db: Session = Depends(get_db)):
     if not db_diary:
         raise HTTPException(status_code=404, detail="Diary not found")
     return db_diary
+    
