@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import './App.css';
 import HomePage from './components/HomePage/HomePage';
-import LoginModal from './components/LoginModal/LoginModal';
 import TopNav from './components/TopNav/TopNav';
+import MainMenu from './components/MainMenu/MainMenu';
 
 function App() {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="App">
-      <TopNav onLoginClick={() => setIsLoginModalOpen(true)} />
-      <HomePage />
-      {isLoginModalOpen && (
-        <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+      {isLoggedIn ? (
+        <>
+          <MainMenu />
+          <HomePage />
+        </>
+      ) : (
+        <>
+          <TopNav onLoginClick={() => setIsLoggedIn(true)} />
+          <HomePage />
+        </>
       )}
     </div>
   );
