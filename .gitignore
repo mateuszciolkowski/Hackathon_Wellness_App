@@ -188,7 +188,14 @@ backend/.pdm-build/
 backend/.ruff_cache/
 backend/.pytype/
 backend/.pyre/
-
+backend/.env
+.env
+.venv
+env/
+ENV/
+env.bak/
+venv/
+venv.bak/
 # Frontend (React.js)
 frontend/node_modules/
 frontend/.env
