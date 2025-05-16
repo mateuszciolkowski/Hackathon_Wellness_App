@@ -1,3 +1,0 @@
-Wysle ci ostatni moj wpis na blogu odnosnie samopouczia zadaj trzy pytania o samopoczucie oraz odnosnie tego co ci teraz napisalem: , Jak tam <cos związane z wpisem>.
-
-odpowiedz w formacie json bym mogl przetworzyc to jak otrzymam to jako apikeys
