@@ -1,0 +1,5 @@
+Wysle ci ostatni moj wpis na blogu odnosnie samopouczia zadaj trzy pytania o samopoczucie oraz odnosnie tego co ci teraz napisalem: , Jak tam <cos związane z wpisem>.
+
+odpowiedz w formacie json bym mogl przetworzyc to jak otrzymam to jako apikeys
+
+"Dziś był jeden z tych dni, które ciężko zapomnieć. Rano obudziłem się z poczuciem pustki, której nie potrafiłem wytłumaczyć. Próbowałem znaleźć coś, co mnie ucieszy, ale nawet spacer nie przyniósł ulgi. Myśli krążyły wokół wspomnień, a samotność zdawała się jeszcze bardziej dotkliwa niż zwykle."
