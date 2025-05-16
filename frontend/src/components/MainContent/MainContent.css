@@ -1,0 +1,22 @@
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-section {
+  text-align: center;
+  max-width: 800px;
+}
+
+.welcome-section h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.welcome-section p {
+  color: #666;
+  font-size: 1.2rem;
+}
