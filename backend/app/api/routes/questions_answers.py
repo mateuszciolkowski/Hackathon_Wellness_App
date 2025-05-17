@@ -2,6 +2,8 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from datetime import date
+from pydantic import BaseModel  # Dodajemy import BaseModel
 from ..schemas.question_answer import QuestionAnswerCreate, QuestionAnswerResponse, QuestionsAnswersCreate
 from ..models.question_answer import QuestionAnswer
 from ..dependencies import get_db
@@ -57,10 +59,16 @@ def get_questions_answers_by_day(day_id: int, db: Session = Depends(get_db)):
     return qas
 
 
-@router.get("/history/{diary_id}", response_model=List[QuestionAnswerResponse])
+class DayQuestionsResponse(BaseModel):
+    day_id: int
+    created_at: date
+    day_rating: int
+    questions: List[QuestionAnswerResponse]
+
+@router.get("/history/{diary_id}", response_model=List[DayQuestionsResponse])
 def get_questions_history(diary_id: int, db: Session = Depends(get_db)):
     """
-    Pobiera historię pytań i odpowiedzi dla określonego dziennika.
+    Pobiera historię pytań i odpowiedzi dla określonego dziennika, pogrupowaną po dniach.
     """
     logger.info(f"Pobieranie historii pytań i odpowiedzi dla dziennika: {diary_id}")
     
@@ -74,22 +82,35 @@ def get_questions_history(diary_id: int, db: Session = Depends(get_db)):
                 detail="Nie znaleziono dni dla tego dziennika"
             )
         
-        # Pobierz wszystkie pytania i odpowiedzi dla znalezionych dni
-        day_ids = [day.id for day in days]
-        questions = db.query(QuestionAnswer)\
-            .filter(QuestionAnswer.day_id.in_(day_ids))\
-            .order_by(QuestionAnswer.id.desc())\
-            .all()
+        # Przygotuj odpowiedź pogrupowaną po dniach
+        grouped_response = []
+        for day in days:
+            # Pobierz pytania dla danego dnia
+            questions = db.query(QuestionAnswer)\
+                .filter(QuestionAnswer.day_id == day.id)\
+                .order_by(QuestionAnswer.id)\
+                .all()
+                
+            if questions:
+                grouped_response.append({
+                    "day_id": day.id,
+                    "created_at": day.created_at,
+                    "day_rating": day.day_rating,
+                    "questions": questions
+                })
         
-        if not questions:
+        if not grouped_response:
             logger.warning(f"Nie znaleziono pytań dla dziennika {diary_id}")
             raise HTTPException(
                 status_code=404,
                 detail="Nie znaleziono pytań dla tego dziennika"
             )
         
-        logger.info(f"Znaleziono {len(questions)} pytań dla dziennika {diary_id}")
-        return questions
+        # Zmieniono sortowanie na rosnące (od najstarszego do najnowszego)
+        grouped_response.sort(key=lambda x: x["created_at"])  # Usunięto reverse=True
+        
+        logger.info(f"Znaleziono pytania dla {len(grouped_response)} dni w dzienniku {diary_id}")
+        return grouped_response
         
     except Exception as e:
         logger.error(f"Błąd podczas pobierania historii pytań: {str(e)}")
