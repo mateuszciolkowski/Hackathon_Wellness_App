@@ -6,6 +6,5 @@ export const ENDPOINTS = {
   GET_USER: `${API_URL}/api/users/1`,
   CREATE_QUESTIONS_ANSWERS: `${API_URL}/api/questions_answers/batch`,
   POST_LOGIN: `${API_URL}/api/users/login`,
-  POST_CHART: `${API_URL}/api/chart/mood-chart/range`,
-  GET_ADVICE: `${API_URL}/api/chat/daily-advice`,
+  CHAT_CHAT: `${API_URL}/api/chat/send`,
 };

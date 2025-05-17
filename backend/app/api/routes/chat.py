@@ -163,31 +163,3 @@ async def analyze_mood(request: AnalyzeAnswersRequest, db: Session = Depends(get
             status_code=500,
             detail=f"Błąd podczas analizy nastroju: {str(e)}"
         )
-
-
-class DailyAdviceRequest(BaseModel):
-    user_id: int
-
-@router.post("/daily-advice", response_model=ChatResponse)
-async def get_daily_advice(request: DailyAdviceRequest, db: Session = Depends(get_db)):
-    try:
-        # Statyczny prompt dla generowania codziennej rady
-        prompt = """Wygeneruj krótką, jedną zdaniową radę dotyczącą zdrowia psychicznego na dzisiaj. 
-        Rada powinna być pozytywna, praktyczna i motywująca. Odpowiedz tylko jednym zdaniem."""
-        
-        # Wyślij do OpenAI
-        completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Jesteś psychologiem specjalizującym się w zdrowiu psychicznym."},
-                {"role": "user", "content": prompt}
-            ]
-        )
-        
-        return ChatResponse(response=completion.choices[0].message.content)
-        
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Błąd podczas generowania codziennej rady: {str(e)}"
-        )
