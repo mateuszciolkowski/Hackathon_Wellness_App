@@ -122,4 +122,4 @@ INSERT INTO messages (conversation_id, role, content) VALUES
 (9, 'user', 'Witam!'),
 (9, 'assistant', 'Witam! Jak mogę pomóc?'),
 (9, 'user', 'Jak wyświetlić wykres samopoczucia?'),
-(10, 'user', 'Czy mogę eksport
+(10, 'user', 'Czy mogę eksport')
