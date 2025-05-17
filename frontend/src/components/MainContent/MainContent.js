@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MainContent.css';
 import Diary from '../Diary/Diary';
 import User from '../User/User';
 import History from '../History/History';
 import AIHandler from '../AIHandler/AIHandler';
-import { ENDPOINTS } from '../../config';
+import { ENDPOINTS, API_URL } from '../../config';  // Added API_URL import
 
 function MainContent({ activeComponent }) {
     const [answers, setAnswers] = useState({
@@ -13,12 +13,49 @@ function MainContent({ activeComponent }) {
         question2: '',
         question3: ''
     });
-
-    const questions = {
+    const [questions, setQuestions] = useState({
         question1: 'Jak się dzisiaj czujesz?',
         question2: 'Co sprawiło Ci dzisiaj radość?',
         question3: 'Jakie masz plany na jutro?'
-    };
+    });
+    const [hasEntries, setHasEntries] = useState(false);
+
+    useEffect(() => {
+        const checkAndFetchQuestions = async () => {
+            try {
+                // Sprawdź czy użytkownik ma wpisy na dziś
+                const response = await axios.get(ENDPOINTS.GET_ALL_DAYS);
+                const todayEntries = response.data.filter(entry => {
+                    const entryDate = new Date(entry.created_at).toDateString();
+                    const today = new Date().toDateString();
+                    return entryDate === today;
+                });
+
+                setHasEntries(todayEntries.length > 0);
+
+                // Jeśli są wpisy, pobierz wygenerowane pytania
+                if (todayEntries.length > 0) {
+                    try {
+                        const questionsResponse = await axios.post(`${API_URL}/api/chat/generate-questions`, {
+                            user_id: 9
+                        });
+                        const generatedQuestions = JSON.parse(questionsResponse.data.response);
+                        setQuestions({
+                            question1: generatedQuestions["1"],
+                            question2: generatedQuestions["2"],
+                            question3: generatedQuestions["3"]
+                        });
+                    } catch (error) {
+                        console.error('Błąd podczas pobierania pytań:', error);
+                    }
+                }
+            } catch (error) {
+                console.error('Błąd podczas sprawdzania wpisów:', error);
+            }
+        };
+
+        checkAndFetchQuestions();
+    }, []);
 
     const handleAnswerChange = (questionKey, value) => {
         setAnswers(prev => ({
@@ -33,20 +70,30 @@ function MainContent({ activeComponent }) {
                 question: question,
                 answer: answers[key]
             }));
-
-            const payload = {
-                questions_answers: questionsAnswers
-            };
-
-            await axios.post(`${ENDPOINTS.CREATE_QUESTIONS_ANSWERS}`, payload);
+    
+            // Wysyłamy każde pytanie i odpowiedź osobno
+            for (const qa of questionsAnswers) {
+                const payload = {
+                    day_id: 5,
+                    questions_answers: [
+                        {
+                            question: qa.question,
+                            answer: qa.answer,
+                            day_id: 5
+                        }
+                    ]
+                };
+    
+                await axios.post(`${ENDPOINTS.CREATE_QUESTIONS_ANSWERS}`, payload);
+            }
             
-            // Wyczyść odpowiedzi po udanym wysłaniu
+            // Czyszczenie formularza po udanym wysłaniu
             setAnswers({
                 question1: '',
                 question2: '',
                 question3: ''
             });
-
+    
         } catch (error) {
             console.error('Błąd podczas wysyłania odpowiedzi:', error);
         }
