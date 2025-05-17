@@ -4,7 +4,9 @@ import './AIHandler.css';
 function AIHandler() {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState([{
+    response: 'Witaj! Jestem Twoim prywatnym AI psychologiem. Jestem tu, aby Ci pomóc w trudnych chwilach, odpowiedzieć na nurtujące Cię pytania i wspierać Cię w rozwoju osobistym. Możesz mi zaufać i podzielić się swoimi przemyśleniami - jestem tu, aby Cię wysłuchać i pomóc znaleźć najlepsze rozwiązania. O czym chciałbyś/chciałabyś porozmawiać?'
+  }]);
   const historyRef = useRef(null);
 
   useEffect(() => {
@@ -30,12 +32,14 @@ function AIHandler() {
       <div className="ai-history-section" ref={historyRef}>
         {history.map((item, index) => (
           <div key={index} className="ai-conversation-item">
-            <div className="ai-query-container">
-              <div className="ai-message-query">
-                <div className="message-header">Twoje pytanie:</div>
-                {item.query}
+            {item.query && (
+              <div className="ai-query-container">
+                <div className="ai-message-query">
+                  <div className="message-header">Twoje pytanie:</div>
+                  {item.query}
+                </div>
               </div>
-            </div>
+            )}
             <div className="ai-response-container">
               <div className="ai-message-response">
                 <div className="message-header">Odpowiedź AI:</div>
