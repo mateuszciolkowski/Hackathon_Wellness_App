@@ -17,7 +17,8 @@ function MainContent({ activeComponent }) {
     const [questions, setQuestions] = useState({});
     const [hasEntries, setHasEntries] = useState(false);
     const [questionsHistory, setQuestionsHistory] = useState([]);
-
+    const [currentDayId, setCurrentDayId] = useState(null);
+    
     useEffect(() => {
         const checkAndFetchQuestions = async () => {
             try {
@@ -79,7 +80,11 @@ function MainContent({ activeComponent }) {
 
     const handleSubmitAll = async () => {
         try {
-            // Sprawdzamy, czy wszystkie odpowiedzi są wypełnione
+            if (!currentDayId) {
+                alert('Najpierw dodaj wpis dzienny przed dodaniem odpowiedzi na pytania.');
+                return;
+            }
+
             const allAnswersFilled = Object.values(answers).every(answer => answer.trim() !== '');
             
             if (!allAnswersFilled) {
@@ -87,41 +92,37 @@ function MainContent({ activeComponent }) {
                 return;
             }
 
-            // Tworzymy tablicę wszystkich pytań i odpowiedzi
             const questionsAnswers = [
                 {
                     question: questions.question1,
                     answer: answers.question1,
-                    day_id: 2
+                    day_id: currentDayId
                 },
                 {
                     question: questions.question2,
                     answer: answers.question2,
-                    day_id: 2
+                    day_id: currentDayId
                 },
                 {
                     question: questions.question3,
                     answer: answers.question3,
-                    day_id: 2
+                    day_id: currentDayId
                 }
             ];
 
-            // Wysyłamy wszystkie pytania i odpowiedzi w jednym żądaniu
             const payload = {
-                day_id: 2,
+                day_id: currentDayId,
                 questions_answers: questionsAnswers
             };
 
             await axios.post(ENDPOINTS.CREATE_QUESTIONS_ANSWERS, payload);
             
-            // Czyszczenie formularza po udanym wysłaniu
             setAnswers({
                 question1: '',
                 question2: '',
                 question3: ''
             });
 
-            // Opcjonalnie: pokaż komunikat o sukcesie
             alert('Odpowiedzi zostały pomyślnie zapisane!');
         } catch (error) {
             console.error('Błąd podczas wysyłania odpowiedzi:', error);
@@ -134,7 +135,7 @@ function MainContent({ activeComponent }) {
             case 'chart':
                 return <div className="chart-section"><ChartView /></div>;
             case 'diary':
-                return <div className="diary-section"><Diary /></div>;
+                return <div className="diary-section"><Diary currentDayId={currentDayId} setCurrentDayId={setCurrentDayId} /></div>;
             case 'user':
                 return <div className="user-section"><User /></div>;
             case 'history':
