@@ -55,8 +55,11 @@ const ChartView = () => {
           const xStep = width / (response.data.dates.length - 1);
           const yScale = height / 100; // zakładamy, że wartości są od 0 do 100
           
+          // Rysowanie linii łączącej punkty
           ctx.beginPath();
-          ctx.strokeStyle = '#4CAF50';
+          ctx.strokeStyle = '#2196F3'; // niebieski kolor
+          ctx.lineWidth = 2;
+          
           response.data.ratings.forEach((value, index) => {
             const x = margin.left + (xStep * index);
             const y = canvas.height - margin.bottom - (value * yScale);
@@ -66,19 +69,23 @@ const ChartView = () => {
             } else {
               ctx.lineTo(x, y);
             }
+          });
+          
+          ctx.stroke();
+          
+          // Rysowanie punktów
+          response.data.ratings.forEach((value, index) => {
+            const x = margin.left + (xStep * index);
+            const y = canvas.height - margin.bottom - (value * yScale);
             
-            // Dodawanie punktów
             ctx.fillStyle = '#4CAF50';
             ctx.beginPath();
             ctx.arc(x, y, 4, 0, Math.PI * 2);
             ctx.fill();
             
-            // Dodawanie etykiet dat
             ctx.fillStyle = '#000';
             ctx.fillText(response.data.dates[index], x - 20, canvas.height - margin.bottom + 20);
           });
-          
-          ctx.stroke();
           
           // Dodawanie etykiet osi Y
           for (let i = 0; i <= 100; i += 20) {
