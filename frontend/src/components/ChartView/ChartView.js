@@ -109,7 +109,7 @@ const ChartView = () => {
 
   return (
     <div className="chart-container">
-      <h2>Wykresy</h2>
+      <h2>Analiza Twojego Samopoczucia</h2>
       <div className="chart-wrapper">
         {loading && <p>Ładowanie danych...</p>}
         {error && <p className="error">{error}</p>}
@@ -120,6 +120,19 @@ const ChartView = () => {
           justifyContent: 'center',
           alignItems: 'center'
         }}></div>
+      </div>
+      <button className="export-button" onClick={() => {}}>
+        Eksportuj do pliku
+      </button>
+      <div className="chart-usage">
+        <h3>Zastosowanie wykresu:</h3>
+        <ul>
+          <li>Monitorowanie zmian nastroju w czasie</li>
+          <li>Identyfikacja wzorców wpływających na samopoczucie</li>
+          <li>Analiza skuteczności stosowanych terapii i działań</li>
+          <li>Wsparcie w komunikacji z lekarzem lub terapeutą</li>
+          <li>Lepsze zrozumienie własnego zdrowia psychicznego</li>
+        </ul>
       </div>
     </div>
   );
