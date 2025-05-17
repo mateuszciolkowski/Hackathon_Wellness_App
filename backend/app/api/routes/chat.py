@@ -6,7 +6,8 @@ import os
 from dotenv import load_dotenv
 import time
 from app.api.dependencies import get_db
-from app.models import Day, Diary, QuestionAnswer  # Dodaj QuestionAnswer do importów
+from app.models import Day, Diary, QuestionAnswer
+from app.api.models.conversation import Conversation, Message  # Dodajemy brakujące importy
 import json
 
 # Załaduj zmienne środowiskowe
@@ -22,18 +23,56 @@ class ChatResponse(BaseModel):
     response: str  # Zmieniamy z powrotem na str, bo OpenAI zwraca string JSON
 
 @router.post("/send", response_model=ChatResponse)
-async def send_message(message: ChatMessage):
+async def send_message(message: ChatMessage, db: Session = Depends(get_db)):
     try:
-        time.sleep(1)  # Dodaj 1 sekundę opóźnienia
+        time.sleep(1)
+        
+        # Pobierz ostatnią konwersację lub utwórz nową
+        conversation = db.query(Conversation).order_by(Conversation.id.desc()).first()
+        if not conversation:
+            conversation = Conversation(user_id=1)
+            db.add(conversation)
+            db.commit()
+        
+        # Pobierz historię konwersacji
+        history = db.query(Message).filter(
+            Message.conversation_id == conversation.id
+        ).order_by(Message.created_at).all()
+        
+        # Wczytaj prompt psychologiczny
+        with open('/Users/mciolkowski/Desktop/HACK/backend/prompts/ai_psycho.txt', 'r') as file:
+            psycho_prompt = file.read()
+        
+        # Przygotuj kontekst dla OpenAI
+        messages = [
+            {"role": "system", "content": psycho_prompt}
+        ]
+        
+        # Dodaj historię rozmów jeśli istnieje
+        for msg in history:
+            messages.append({"role": msg.role, "content": msg.content})
+        
+        # Dodaj nową wiadomość użytkownika
+        messages.append({"role": "user", "content": message.prompt})
+        
+        # Wyślij do OpenAI
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Jesteś pomocnym asystentem."},
-                {"role": "user", "content": message.prompt}
-            ]
+            messages=messages
         )
+        
+        # Zapisz odpowiedź asystenta
         ai_response = completion.choices[0].message.content
+        assistant_msg = Message(
+            conversation_id=conversation.id,
+            role="assistant",
+            content=ai_response
+        )
+        db.add(assistant_msg)
+        db.commit()
+        
         return ChatResponse(response=ai_response)
+        
     except Exception as e:
         raise HTTPException(
             status_code=500,
