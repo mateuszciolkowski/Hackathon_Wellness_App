@@ -1,0 +1,125 @@
+-- Usuń poprzednie dane i zresetuj ID
+TRUNCATE TABLE questions_answers, days, avatars, diaries, users RESTART IDENTITY CASCADE;
+
+-- USERS (5)
+INSERT INTO users (name, nickname, email, password_hash, birth_year) VALUES
+('Anna Kowalska', 'annak', 'anna@example.com', 'hash1', 1990),
+('Jan Nowak', 'jann', 'jan@example.com', 'hash2', 1985),
+('Marta Wiśniewska', 'martaw', 'marta@example.com', 'hash3', 1992),
+('Piotr Zieliński', 'piotrz', 'piotr@example.com', 'hash4', 1988),
+('Kasia Wójcik', 'kasiaw', 'kasia@example.com', 'hash5', 1995);
+
+-- DIARIES (5) - każdy user ma 1 dziennik
+INSERT INTO diaries (user_id) VALUES
+(1),(2),(3),(4),(5);
+
+-- AVATARS (5) - po 1 na dziennik
+INSERT INTO avatars (diary_id) VALUES
+(1),(2),(3),(4),(5);
+
+-- DAYS (dla każdego diary po 2 dni, czyli 10 dni łącznie)
+INSERT INTO days (diary_id, main_entry, created_at, day_rating) VALUES
+(1, 'Dzień pełen energii i pozytywnych wyzwań.', '2025-05-10', 85),
+(1, 'Trochę zmęczenia, ale udało się wytrwać.', '2025-05-11', 70),
+
+(2, 'Nowy projekt w pracy, dużo nauki.', '2025-05-10', 75),
+(2, 'Spotkanie z przyjaciółmi poprawiło humor.', '2025-05-11', 90),
+
+(3, 'Wyzwania rodzinne, ale udało się zachować spokój.', '2025-05-10', 60),
+(3, 'Dzień kreatywny, sporo inspiracji.', '2025-05-11', 80),
+
+(4, 'Intensywny trening i zdrowe jedzenie.', '2025-05-10', 95),
+(4, 'Czas na relaks i książkę.', '2025-05-11', 85),
+
+(5, 'Praca zdalna i dużo efektywności.', '2025-05-10', 88),
+(5, 'Spotkanie online z zespołem, dobre pomysły.', '2025-05-11', 90);
+
+-- QUESTIONS_ANSWERS (3 pytania na dzień, 10 dni = 30 wpisów)
+INSERT INTO questions_answers (day_id, question, answer) VALUES
+-- Dni 1 i 2 (diary_id=1)
+(1, 'Jakie emocje towarzyszyły Ci dziś?', 'Radość i entuzjazm.'),
+(1, 'Czy udało się osiągnąć zaplanowane cele?', 'Tak, większość z nich.'),
+(1, 'Co poprawiło Ci nastrój?', 'Spotkanie z przyjaciółmi.'),
+(2, 'Jak się czułeś fizycznie?', 'Trochę zmęczony, ale dałem radę.'),
+(2, 'Co było największym wyzwaniem?', 'Utrzymanie koncentracji.'),
+(2, 'Jakie masz plany na jutro?', 'Więcej odpoczynku.'),
+
+-- Dni 3 i 4 (diary_id=2)
+(3, 'Jakie emocje towarzyszyły Ci dziś?', 'Ekscytacja i ciekawość.'),
+(3, 'Czy udało się osiągnąć zaplanowane cele?', 'Częściowo, jest co poprawić.'),
+(3, 'Co poprawiło Ci nastrój?', 'Kawa z kolegą.'),
+(4, 'Jak się czułeś fizycznie?', 'Świetnie, dużo energii.'),
+(4, 'Co było największym wyzwaniem?', 'Zarządzanie czasem.'),
+(4, 'Jakie masz plany na jutro?', 'Przygotować prezentację.'),
+
+-- Dni 5 i 6 (diary_id=3)
+(5, 'Jakie emocje towarzyszyły Ci dziś?', 'Stres i niepokój.'),
+(5, 'Czy udało się osiągnąć zaplanowane cele?', 'Niestety nie.'),
+(5, 'Co poprawiło Ci nastrój?', 'Spacer po parku.'),
+(6, 'Jak się czułeś fizycznie?', 'Dobrze, mimo wszystko.'),
+(6, 'Co było największym wyzwaniem?', 'Balans praca-rodzina.'),
+(6, 'Jakie masz plany na jutro?', 'Skupić się na relaksie.'),
+
+-- Dni 7 i 8 (diary_id=4)
+(7, 'Jakie emocje towarzyszyły Ci dziś?', 'Motywacja i satysfakcja.'),
+(7, 'Czy udało się osiągnąć zaplanowane cele?', 'Tak, bez problemów.'),
+(7, 'Co poprawiło Ci nastrój?', 'Udany trening.'),
+(8, 'Jak się czułeś fizycznie?', 'Świetnie, dużo siły.'),
+(8, 'Co było największym wyzwaniem?', 'Utrzymanie diety.'),
+(8, 'Jakie masz plany na jutro?', 'Kontynuować zdrowy tryb życia.'),
+
+-- Dni 9 i 10 (diary_id=5)
+(9, 'Jakie emocje towarzyszyły Ci dziś?', 'Skupienie i zadowolenie.'),
+(9, 'Czy udało się osiągnąć zaplanowane cele?', 'Tak, wszystko zgodnie z planem.'),
+(9, 'Co poprawiło Ci nastrój?', 'Pozytywne feedback od zespołu.'),
+(10, 'Jak się czułeś fizycznie?', 'Dobrze, mimo siedzącej pracy.'),
+(10, 'Co było największym wyzwaniem?', 'Utrzymanie motywacji.'),
+(10, 'Jakie masz plany na jutro?', 'Zaplanować kolejne zadania.');
+
+-- CONVERSATIONS (po 2 konwersacje na użytkownika, 5 użytkowników = 10 konwersacji)
+INSERT INTO conversations (user_id) VALUES
+(1),(1),
+(2),(2),
+(3),(3),
+(4),(4),
+(5),(5);
+
+-- MESSAGES (każda konwersacja po 3 wiadomości = 30 wiadomości)
+-- Konwersacje 1 i 2 (user_id=1)
+INSERT INTO messages (conversation_id, role, content) VALUES
+(1, 'user', 'Cześć, jak się masz?'),
+(1, 'assistant', 'Cześć! W czym mogę pomóc?'),
+(1, 'user', 'Chciałbym zobaczyć mój dziennik.'),
+(2, 'user', 'Czy możesz podsumować moje samopoczucie z ostatnich dni?'),
+(2, 'assistant', 'Oczywiście, już sprawdzam.'),
+(2, 'user', 'Dziękuję!'),
+
+-- Konwersacje 3 i 4 (user_id=2)
+(3, 'user', 'Hej, mam pytanie dotyczące moich dni.'),
+(3, 'assistant', 'Proszę, pytaj.'),
+(3, 'user', 'Czy mogę dodać więcej wpisów?'),
+(4, 'user', 'Jakie są dostępne pytania w aplikacji?'),
+(4, 'assistant', 'Aktualnie mamy 3 pytania na dzień.'),
+(4, 'user', 'Super, dzięki!'),
+
+-- Konwersacje 5 i 6 (user_id=3)
+(5, 'user', 'Dzień dobry!'),
+(5, 'assistant', 'Dzień dobry! W czym mogę pomóc?'),
+(5, 'user', 'Chcę poprawić moje wpisy.'),
+(6, 'user', 'Jak często mogę dodawać wpisy?'),
+(6, 'assistant', 'Codziennie możesz dodawać nowe wpisy.'),
+(6, 'user', 'Dziękuję!'),
+
+-- Konwersacje 7 i 8 (user_id=4)
+(7, 'user', 'Cześć!'),
+(7, 'assistant', 'Cześć! Co u Ciebie?'),
+(7, 'user', 'Chcę zacząć nowy dziennik.'),
+(8, 'user', 'Jakie są limity na ocenę dnia?'),
+(8, 'assistant', 'Ocenę dnia możesz wystawić w skali 0-100.'),
+(8, 'user', 'Dzięki!'),
+
+-- Konwersacje 9 i 10 (user_id=5)
+(9, 'user', 'Witam!'),
+(9, 'assistant', 'Witam! Jak mogę pomóc?'),
+(9, 'user', 'Jak wyświetlić wykres samopoczucia?'),
+(10, 'user', 'Czy mogę eksport')
