@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import users, diaries, days, chat, questions_answers  # dodaj import
-from app.db.session import engine, Base  # Zmieniony import
+from app.api.routes import users, diaries, days, chat, questions_answers, chart  # dodano import chart
+from app.db.session import engine, Base
 import logging
 
 logger = logging.getLogger(__name__)
@@ -55,7 +55,8 @@ app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(diaries.router, prefix="/api/diaries", tags=["diaries"])
 app.include_router(days.router, prefix="/api/days", tags=["days"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
-app.include_router(questions_answers.router, prefix="/api/questions_answers", tags=["questions_answers"])  # dodaj tę linię
+app.include_router(questions_answers.router, prefix="/api/questions_answers", tags=["questions_answers"])
+app.include_router(chart.router, prefix="/api/chart", tags=["chart"])  # dodano nowy router
 
 @app.get("/")
 def read_root():
