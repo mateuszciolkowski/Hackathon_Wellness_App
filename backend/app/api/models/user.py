@@ -13,3 +13,5 @@ class User(Base):
     birth_year = Column(Integer, nullable=False)
 
     diaries = relationship("Diary", back_populates="user", cascade="all, delete")
+    
+    conversations = relationship("Conversation", back_populates="user", cascade="all, delete")
