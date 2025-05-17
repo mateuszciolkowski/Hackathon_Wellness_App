@@ -734,3 +734,17 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.5);
 }
+.brand-name {
+  position: relative;
+  z-index: 1;
+  font-family: 'Dancing Script', cursive;
+  font-size: 8rem;
+  color: #FF69B4;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  animation: fadeInScale 1.5s ease-out, pulseSize 4s ease-in-out infinite;
+  background: linear-gradient(45deg, #FF69B4, #FFB6C1);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: -20px;
+}

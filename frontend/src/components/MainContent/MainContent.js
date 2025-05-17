@@ -144,7 +144,7 @@ function MainContent({ activeComponent }) {
             default:
                 return (
                     <div className="welcome-section">
-                        <h1>Witaj w swojej przestrzeni wellness</h1>
+                        <h1>Witaj w swojej przestrzeni <span className="brand-name2">Wellness</span></h1>
                         <p>Zadbaj o swoje samopoczucie z naszymi narzędziami</p>
                         
                         {questionsHistory.length > 0 && (
