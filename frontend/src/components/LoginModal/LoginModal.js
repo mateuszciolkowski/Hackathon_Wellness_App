@@ -1,13 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import './LoginModal.css';
 import { API_URL, ENDPOINTS } from '../../config';
 import { saveSession } from '../../utils/authUtils';
+import RegisterModal from './RegisterModal';
 
 // Konfiguracja bazowego URL dla Axios
 axios.defaults.baseURL = API_URL;
 
 function LoginModal({ onClose, onLoginSuccess }) {
+  const [showRegister, setShowRegister] = useState(false);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -40,6 +42,10 @@ function LoginModal({ onClose, onLoginSuccess }) {
     }
   };
 
+  if (showRegister) {
+    return <RegisterModal onClose={() => setShowRegister(false)} />;
+  }
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -71,6 +77,15 @@ function LoginModal({ onClose, onLoginSuccess }) {
             Zaloguj się
           </button>
         </form>
+        <div className="register-prompt">
+          Nie masz konta?{' '}
+          <button 
+            className="register-link" 
+            onClick={() => setShowRegister(true)}
+          >
+            Zarejestruj się
+          </button>
+        </div>
       </div>
     </div>
   );

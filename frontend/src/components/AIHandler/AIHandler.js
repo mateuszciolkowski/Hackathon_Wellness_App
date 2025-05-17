@@ -62,14 +62,14 @@ function AIHandler() {
         {history.map((item, index) => (
           <div key={index} className={`ai-message ${item.role}`}>
             <div className="message-header">
-              {item.role === 'user' ? 'Ty' : 'AI Psycholog'}
+              {item.role === 'user' ? 'Ty' : 'Keczap'}
             </div>
             <div className="message-content">{item.content}</div>
           </div>
         ))}
         {isLoading && (
           <div className="ai-message assistant">
-            <div className="message-header">AI Psycholog</div>
+            <div className="message-header">...</div>
             <div className="message-content">Piszę odpowiedź...</div>
           </div>
         )}
