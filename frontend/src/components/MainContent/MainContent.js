@@ -5,6 +5,7 @@ import Diary from '../Diary/Diary';
 import User from '../User/User';
 import History from '../History/History';
 import AIHandler from '../AIHandler/AIHandler';
+import ChartView from '../ChartView/ChartView';
 import { ENDPOINTS, API_URL } from '../../config';
 
 function MainContent({ activeComponent }) {
@@ -107,6 +108,8 @@ function MainContent({ activeComponent }) {
 
     const renderComponent = () => {
         switch (activeComponent) {
+            case 'chart':
+                return <div className="chart-section"><ChartView /></div>;
             case 'diary':
                 return <div className="diary-section"><Diary /></div>;
             case 'user':
