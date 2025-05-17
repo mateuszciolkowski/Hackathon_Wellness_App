@@ -7,7 +7,7 @@ from sqlalchemy.exc import OperationalError
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:admin@10.254.68.102:5432/mental"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:admin@127.0.0.1:5432/mental"
 
 try:
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
