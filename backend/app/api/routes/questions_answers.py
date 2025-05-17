@@ -56,6 +56,7 @@ def get_questions_answers_by_day(day_id: int, db: Session = Depends(get_db)):
     
     return qas
 
+
 @router.get("/history/{diary_id}", response_model=List[QuestionAnswerResponse])
 def get_questions_history(diary_id: int, db: Session = Depends(get_db)):
     """
@@ -96,10 +97,3 @@ def get_questions_history(diary_id: int, db: Session = Depends(get_db)):
             status_code=500,
             detail=f"Błąd podczas pobierania historii pytań: {str(e)}"
         )
-# podawane sa trzy pytania do uzytkownika
-#uzytkownik odpowiada na te pytania
-#w bd zapisywane sa pytania
-#w bazie danych sa zapisywane odpowiedzi na te pytania
-#zapis konwersacji na potrzeby generacji odpowiedzi i analizy kontekstu
-#pytanie jest kolumna w QA
-#odp jest kolumna w QA
