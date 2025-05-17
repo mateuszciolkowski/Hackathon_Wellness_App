@@ -124,3 +124,15 @@ def read_days_by_user(user_id: int, db: Session = Depends(get_db)):
 
     logger.info(f"Znaleziono {len(days)} wpisów dla użytkownika o ID {user_id}")
     return days
+
+@router.get("/", response_model=List[DayResponse])
+def read_all_days(db: Session = Depends(get_db)):
+    days = db.query(Day).all()
+    return days
+
+@router.get("/by-diary/{diary_id}", response_model=List[DayResponse])
+def read_days_by_diary(diary_id: int, db: Session = Depends(get_db)):
+    days = db.query(Day).filter(Day.diary_id == diary_id).all()
+    if not days:
+        raise HTTPException(status_code=404, detail="Nie znaleziono dni dla tego dziennika")
+    return days
