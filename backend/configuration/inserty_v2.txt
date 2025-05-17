@@ -1,54 +1,45 @@
 -- Usuń poprzednie dane i zresetuj ID
 TRUNCATE TABLE questions_answers, days, avatars, diaries, users RESTART IDENTITY CASCADE;
 
--- Użytkownicy
 INSERT INTO users (name, nickname, email, password_hash, birth_year) VALUES
-('Anna Kowalska', 'annka', 'anna.k@example.com', 'hash1', 1990),
-('Michał Nowak', 'michalN', 'michal.n@example.com', 'hash2', 1985),
-('Katarzyna Wiśniewska', 'kasiaW', 'kasia.w@example.com', 'hash3', 1992),
-('Tomasz Zieliński', 'tomz', 'tomasz.z@example.com', 'hash4', 1980),
-('Ewa Nowak', 'ewan', 'ewa.n@example.com', 'hash5', 1995);
+('Apolonia Mikołajczak', 'matysko93', 'janiszewski.marcin@kozminski.pl', '4f08968c0f0e3...', 2007),
+('Maksym Ławniczak', 'laskowskamateusz', 'j.jaworski@gmail.com', 'a91c5e67c46f9...', 1997),
+('Iga Kaźmierczak', 'nowakmarcinkamil', 'karolina90@kowalska.pl', '35e9bdaf6f81d...', 1990),
+('Zofia Siwek', 'aadamczyk', 'rogalaska@gmail.com', '1a947dd98411a...', 1987),
+('Wiktoria Kozioł', 'zofia.piatek', 'adach92@interia.pl', '24ea9d3997f7a...', 1988),
+('Bartłomiej Stefański', 'pietrzakpaulina', 'kasprzyk.jan@zsp.pl', '924baf227d6da...', 2000),
+('Wanda Siwek', 'j.konopka', 'stepien95@onet.eu', '40ee80ae01b39...', 1991),
+('Filip Rutkowski', 'sandra.zawadzka', 'magdaziolkowska@onet.pl', '41ef9d5e48d2a...', 1988),
+('Tadeusz Osiński', 'ewelinabaran', 'tomaszewski.ewa@outlook.com', 'e165b365cbf4a...', 1993),
+('Daniel Białek', 'karolinamaj', 'katarzynagrzelak@poczta.fm', 'cf4d9a75a3065...', 1981);
 
--- Dzienniki (po jednym na użytkownika)
+
 INSERT INTO diaries (user_id) VALUES
-(1), (2), (3), (4), (5);
+(1), (2), (3), (4), (5), (6), (7), (8), (9), (10);
 
--- Dni (po 2 dni na dziennik)
-INSERT INTO days (diary_id, main_entry, day_rating) VALUES
-(1, 'Dzień pełen sukcesów i uśmiechu.', 90),
-(1, 'Trochę zmęczenia, ale pozytywne nastawienie.', 75),
-(2, 'Dzień intensywnej nauki.', 80),
-(2, 'Spotkanie z przyjaciółmi poprawiło humor.', 85),
-(3, 'Czas na odpoczynek i relaks.', 95),
-(3, 'Praca była wyzwaniem, ale się udało.', 70),
-(4, 'Ukończyłem ważny projekt.', 88),
-(4, 'Był trudny moment, ale wszystko dobrze się skończyło.', 65),
-(5, 'Dzień pełen nowych pomysłów.', 92),
-(5, 'Wieczorny spacer i refleksja.', 78);
+INSERT INTO days (diary_id, main_entry, created_at, day_rating) VALUES
+(1, 'Zacząłem dzień od spaceru...', '2025-05-13', 43),
+(2, 'Dzisiaj zrobiłem coś wyjątkowego...', '2025-04-26', 87),
+(3, 'Czułem się niesamowicie pozytywnie...', '2025-04-30', 29),
+(4, 'Nie było najlepiej...', '2025-04-23', 19),
+(5, 'Fantastyczny dzień z przyjaciółmi...', '2025-05-10', 72),
+(6, 'Spędziłem dzień produktywnie...', '2025-04-28', 95),
+(7, 'Zwyczajny dzień, ale bez stresu...', '2025-05-01', 50),
+(8, 'Odwiedziłem rodzinę i dużo rozmawialiśmy...', '2025-04-29', 66),
+(9, 'Dzień pełen niespodzianek...', '2025-04-24', 33),
+(10, 'Pogoda była wspaniała, poszedłem na rower...', '2025-05-14', 84);
 
--- Pytania i odpowiedzi (po 2 pytania na dzień)
 INSERT INTO questions_answers (day_id, question, answer) VALUES
-(1, 'Jak się dziś czułeś?', 'Pełen energii i optymizmu.'),
-(1, 'Co sprawiło Ci radość?', 'Spotkanie z dawno niewidzianą osobą.'),
-(2, 'Co było wyzwaniem?', 'Dużo pracy, ale satysfakcjonującej.'),
-(2, 'Jak się zrelaksowałeś?', 'Przy książce i muzyce.'),
-(3, 'Co najbardziej zapamiętałeś z dnia?', 'Nowe informacje i zdobyte umiejętności.'),
-(3, 'Czy coś Cię zaskoczyło?', 'Tak, pozytywna niespodzianka.'),
-(4, 'Co udało się zrobić?', 'Spędziłem czas z przyjaciółmi.'),
-(4, 'Jak planujesz jutro?', 'Kontynuować naukę i odpoczywać.'),
-(5, 'Co najbardziej Cię uspokoiło?', 'Spacer w parku.'),
-(5, 'Czy miałeś chwilę dla siebie?', 'Tak, medytacja.'),
-(6, 'Jakie nowe rzeczy się nauczyłeś?', 'Zarządzanie czasem.'),
-(6, 'Co najbardziej Cię motywuje?', 'Chęć rozwoju.'),
-(7, 'Jak się dziś czułeś?', 'Dumny z siebie.'),
-(7, 'Co było najtrudniejsze?', 'Utrzymanie koncentracji.'),
-(8, 'Co poprawiłoby Twój nastrój?', 'Więcej czasu na hobby.'),
-(8, 'Czy byłeś zadowolony z dnia?', 'Tak, mimo trudności.'),
-(9, 'Co dało Ci energię?', 'Inspirująca rozmowa.'),
-(9, 'Czy miałeś jakiś cel?', 'Tak, rozwój osobisty.'),
-(10, 'Jak spędziłeś wieczór?', 'Na spacerze z rodziną.'),
-(10, 'Co przemyślałeś?', 'Plany na przyszłość.');
+(1, 'Co dzisiaj sprawiło Ci radość?', 'Spacer po lesie.'),
+(2, 'Czego się dzisiaj nauczyłeś?', 'Lepszej organizacji.'),
+(3, 'Co było dzisiaj najtrudniejsze?', 'Rozmowa z szefem.'),
+(4, 'Za co jesteś wdzięczny?', 'Za wsparcie bliskich.'),
+(5, 'Jak się dziś czułeś?', 'Zrelaksowany.'),
+(6, 'Czy coś Cię zaskoczyło?', 'Tak, niespodziewany telefon.'),
+(7, 'Czy zrobiłeś coś twórczego?', 'Tak, rysowałem.'),
+(8, 'Jakie masz plany na jutro?', 'Sprzątanie i spacer.'),
+(9, 'Co byś zmienił w dzisiejszym dniu?', 'Mniej czasu online.'),
+(10, 'Jak oceniasz swój dzień?', 'Całkiem dobrze.');
 
--- Avatary (po jednym na dziennik)
 INSERT INTO avatars (diary_id) VALUES
-(1), (2), (3), (4), (5);
+(1), (2), (3), (4), (5), (6), (7), (8), (9), (10);

@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 import time
 from app.api.dependencies import get_db
-from app.models import Day, Diary  # Dodaj te importy
+from app.models import Day, Diary, QuestionAnswer  # Dodaj QuestionAnswer do importów
 import json
 
 # Załaduj zmienne środowiskowe
@@ -74,4 +74,48 @@ async def generate_questions(request: BlogPostQuestionRequest, db: Session = Dep
         raise HTTPException(
             status_code=500,
             detail=f"Błąd podczas generowania pytań: {str(e)}"
+        )
+
+
+class AnalyzeAnswersRequest(BaseModel):
+    day_id: int
+
+@router.post("/analyze-mood", response_model=ChatResponse)
+async def analyze_mood(request: AnalyzeAnswersRequest, db: Session = Depends(get_db)):
+    try:
+        # Pobierz pytania i odpowiedzi dla danego dnia
+        qa = db.query(QuestionAnswer).filter(  # Zmieniamy QuestionsAnswers na QuestionAnswer
+            QuestionAnswer.day_id == request.day_id
+        ).all()
+        
+        if not qa:
+            raise HTTPException(status_code=404, detail="Nie znaleziono pytań dla tego dnia")
+        
+        # Przygotuj prompt dla OpenAI
+        prompt = "Przesle ci zaraz pytania oraz odpowiedzi na ktore uzytkownik odpowiedzial chcialbym bys je przeanalizowal i ocenil w skali 1/100 jakie samopoczucie towarzyszy osobie ktora na nie odpowiedzial odpowiedz jedna liczba. Nie chce bys odpisywal jakiekolwiek inne slowo ani emotke niz liczba\n\n"
+        
+        for item in qa:
+            prompt += f"Pytanie: {item.question}\nOdpowiedź: {item.answer}\n\n"
+        
+        # Wyślij do OpenAI
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "Jesteś analitykiem nastroju. Zwracasz tylko liczby."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        
+        # Parsuj odpowiedź i zaktualizuj day_rating
+        rating = int(completion.choices[0].message.content)
+        day = db.query(Day).filter(Day.id == request.day_id).first()
+        day.day_rating = rating
+        db.commit()
+        
+        return ChatResponse(response=str(rating))
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Błąd podczas analizy nastroju: {str(e)}"
         )
