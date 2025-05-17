@@ -128,16 +128,17 @@ def psycho_analysis(diary_id: int, db: Session = Depends(get_db)):
     """
     try:
         # Pobierz historię pytań
-        questions = get_questions_history(diary_id, db)
+        days_data = get_questions_history(diary_id, db)
         
-        # Wczytaj prompt psychoanalityczny
-        with open('/Users/mciolkowski/Desktop/HACK/backend/prompts/pyscho_analtics.txt', 'r') as file:
-            psycho_prompt = file.read()
+        # Zdefiniuj prompt psychoanalityczny bezpośrednio w kodzie
+        psycho_prompt = """Dostajesz dane ktore mowia o tym masz nastoj przez ostatnie dni chce bys dokladnie to przeanalizowal wzgledem twojego zdrowia posychicznego i napisal co mozemy z tym zrobic zeby poczuc sie lepiej. Napisz zwiezle i na temat"""
         
         # Przygotuj dane do analizy
         analysis_data = psycho_prompt + "\n\nDane do analizy:\n"
-        for q in questions:
-            analysis_data += f"Pytanie: {q.question}\nOdpowiedź: {q.answer}\n\n"
+        for day in days_data:
+            analysis_data += f"Data: {day['created_at']}, Ocena dnia: {day['day_rating']}\n"
+            for qa in day['questions']:
+                analysis_data += f"Pytanie: {qa.question}\nOdpowiedź: {qa.answer}\n\n"
         
         # Dodaj import klienta OpenAI
         import openai
