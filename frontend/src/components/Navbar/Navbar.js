@@ -2,6 +2,11 @@ import React from 'react';
 import './Navbar.css';
 
 function Navbar({ onComponentChange }) {
+  const handleChartClick = () => {
+    // Najpierw zmieniamy aktywny komponent na 'chart'
+    onComponentChange('chart');
+  };
+
   return (
     <nav className="navbar">
       <button 
@@ -31,9 +36,15 @@ function Navbar({ onComponentChange }) {
         </button>
         <button 
           className="nav-button blue" alt="AI"
-          onClick={() => onComponentChange('aiHandler')} // Poprawka tutaj
+          onClick={() => onComponentChange('aiHandler')}
         >
           AI Obsługa
+        </button>
+        <button 
+          className="nav-button purple" 
+          onClick={handleChartClick}
+        >
+          Wykresy
         </button>
       </div>
     </nav>
