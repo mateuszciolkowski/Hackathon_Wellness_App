@@ -39,9 +39,8 @@ async def send_message(message: ChatMessage, db: Session = Depends(get_db)):
             Message.conversation_id == conversation.id
         ).order_by(Message.created_at).all()
         
-        # Wczytaj prompt psychologiczny
-        with open('/Users/mciolkowski/Desktop/HACK/backend/prompts/ai_psycho.txt', 'r') as file:
-            psycho_prompt = file.read()
+        # Wczytaj prompt psychologiczny - zamiana na statyczny prompt
+        psycho_prompt = """Jestem twoim osobistym asystentem psychologicznym. Pomogę ci przeanalizować twoje samopoczucie i emocje. Będę odpowiadał w sposób empatyczny i wspierający, zawsze z troską o twoje dobro. Skupię się na twoich uczuciach i pomogę ci lepiej je zrozumieć."""
         
         # Przygotuj kontekst dla OpenAI
         messages = [
@@ -90,9 +89,15 @@ async def generate_questions(request: BlogPostQuestionRequest, db: Session = Dep
         if not last_entry:
             raise HTTPException(status_code=404, detail="Nie znaleziono żadnych wpisów")
         
-        # Wczytaj prompt z pliku
-        with open('/Users/mciolkowski/Desktop/HACK/backend/prompts/questions.txt', 'r') as file:
-            prompt_template = file.read()
+        # Statyczny prompt zamiast wczytywania z pliku
+        prompt_template = """Wygeneruj 3 pytania dotyczące wpisu użytkownika. Pytania powinny pomóc w głębszej analizie emocji i samopoczucia. Odpowiedź zwróć w formacie JSON z tablicą pytań. Na przykład:
+{
+    "questions": [
+        "Jak się czułeś w tym momencie?",
+        "Co najbardziej wpłynęło na twoje emocje?",
+        "Jakie wnioski wyciągasz z tej sytuacji?"
+    ]
+}"""
         
         # Połącz prompt z treścią wpisu
         full_prompt = f"{prompt_template}\n\nTreść wpisu:\n{last_entry.main_entry}"
@@ -123,18 +128,18 @@ class AnalyzeAnswersRequest(BaseModel):
 async def analyze_mood(request: AnalyzeAnswersRequest, db: Session = Depends(get_db)):
     try:
         # Pobierz pytania i odpowiedzi dla danego dnia
-        qa = db.query(QuestionAnswer).filter(  # Zmieniamy QuestionsAnswers na QuestionAnswer
+        qa = db.query(QuestionAnswer).filter(
             QuestionAnswer.day_id == request.day_id
         ).all()
         
         if not qa:
             raise HTTPException(status_code=404, detail="Nie znaleziono pytań dla tego dnia")
         
-        # Przygotuj prompt dla OpenAI
-        prompt = "Przesle ci zaraz pytania oraz odpowiedzi na ktore uzytkownik odpowiedzial chcialbym bys je przeanalizowal i ocenil w skali 1/100 jakie samopoczucie towarzyszy osobie ktora na nie odpowiedzial odpowiedz jedna liczba. Nie chce bys odpisywal jakiekolwiek inne slowo ani emotke niz liczba\n\n"
+        # Statyczny prompt zamiast przygotowywania dynamicznego
+        prompt = """Przeanalizuj odpowiedzi użytkownika i oceń jego samopoczucie w skali 1-100. Odpowiedz tylko liczbą, bez dodatkowego tekstu czy emotikon. Wyższa liczba oznacza lepsze samopoczucie."""
         
         for item in qa:
-            prompt += f"Pytanie: {item.question}\nOdpowiedź: {item.answer}\n\n"
+            prompt += f"\nPytanie: {item.question}\nOdpowiedź: {item.answer}\n"
         
         # Wyślij do OpenAI
         completion = client.chat.completions.create(
