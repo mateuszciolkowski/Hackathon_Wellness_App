@@ -5,5 +5,5 @@ export const ENDPOINTS = {
   CREATE_DAY: `${API_URL}/api/days/`,
   GET_USER: `${API_URL}/api/users/1`,
   CREATE_QUESTIONS_ANSWERS: `${API_URL}/api/questions_answers/batch`,
-  // tutaj możesz dodać więcej endpointów w przyszłości
+  POST_LOGIN: `${API_URL}/api/users/login`,
 };
