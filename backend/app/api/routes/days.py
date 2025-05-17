@@ -136,3 +136,28 @@ def read_days_by_diary(diary_id: int, db: Session = Depends(get_db)):
     if not days:
         raise HTTPException(status_code=404, detail="Nie znaleziono dni dla tego dziennika")
     return days
+
+
+@router.put("/{day_put_id}", response_model=DayResponse)
+def update_day_entry(day_id: int, day_data: DayCreate, db: Session = Depends(get_db)):
+    logger.info(f"Próba aktualizacji wpisu dnia o ID {day_id}: {day_data}")
+    
+    # Znajdź istniejący wpis
+    db_day = db.query(Day).filter(Day.id == day_id).first()
+    if not db_day:
+        logger.warning(f"Nie znaleziono wpisu dnia o ID {day_id}")
+        raise HTTPException(status_code=404, detail="Nie znaleziono wpisu dnia")
+    
+    # Aktualizuj pola
+    db_day.main_entry = day_data.main_entry
+    db_day.day_rating = day_data.day_rating
+    
+    try:
+        db.commit()
+        db.refresh(db_day)
+        logger.info(f"Zaktualizowano wpis dnia: {db_day}")
+        return db_day
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Błąd podczas aktualizacji wpisu: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Błąd podczas aktualizacji wpisu: {str(e)}")

@@ -1,14 +1,14 @@
 import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List, Optional  # Dodano import Optional
+from typing import List, Optional
 from datetime import date
-from pydantic import BaseModel  # Dodajemy import BaseModel
+from pydantic import BaseModel
 from ..schemas.question_answer import QuestionAnswerCreate, QuestionAnswerResponse, QuestionsAnswersCreate
 from ..models.question_answer import QuestionAnswer
 from ..dependencies import get_db
 from app.models import Day
-from .chat import ChatResponse  # Dodaj ten import
+from .chat import ChatResponse
 
 # Konfiguracja loggera
 logger = logging.getLogger(__name__)
