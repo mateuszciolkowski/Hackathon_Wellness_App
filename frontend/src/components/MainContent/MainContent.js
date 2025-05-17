@@ -5,7 +5,7 @@ import Diary from '../Diary/Diary';
 import User from '../User/User';
 import History from '../History/History';
 import AIHandler from '../AIHandler/AIHandler';
-import { ENDPOINTS, API_URL } from '../../config';  // Added API_URL import
+import { ENDPOINTS, API_URL } from '../../config';
 
 function MainContent({ activeComponent }) {
     const [answers, setAnswers] = useState({
@@ -13,17 +13,12 @@ function MainContent({ activeComponent }) {
         question2: '',
         question3: ''
     });
-    const [questions, setQuestions] = useState({
-        question1: 'Jak się dzisiaj czujesz?',
-        question2: 'Co sprawiło Ci dzisiaj radość?',
-        question3: 'Jakie masz plany na jutro?'
-    });
+    const [questions, setQuestions] = useState({});
     const [hasEntries, setHasEntries] = useState(false);
 
     useEffect(() => {
         const checkAndFetchQuestions = async () => {
             try {
-                // Sprawdź czy użytkownik ma wpisy na dziś
                 const response = await axios.get(ENDPOINTS.GET_ALL_DAYS);
                 const todayEntries = response.data.filter(entry => {
                     const entryDate = new Date(entry.created_at).toDateString();
@@ -33,21 +28,32 @@ function MainContent({ activeComponent }) {
 
                 setHasEntries(todayEntries.length > 0);
 
-                // Jeśli są wpisy, pobierz wygenerowane pytania
-                if (todayEntries.length > 0) {
-                    try {
-                        const questionsResponse = await axios.post(`${API_URL}/api/chat/generate-questions`, {
-                            user_id: 9
-                        });
-                        const generatedQuestions = JSON.parse(questionsResponse.data.response);
-                        setQuestions({
-                            question1: generatedQuestions["1"],
-                            question2: generatedQuestions["2"],
-                            question3: generatedQuestions["3"]
-                        });
-                    } catch (error) {
-                        console.error('Błąd podczas pobierania pytań:', error);
+                try {
+                    const questionsResponse = await axios.post(`${API_URL}/api/chat/generate-questions`, {
+                        user_id: 9
+                    });
+                    
+                    // Dodajemy dodatkowe sprawdzenie i debugowanie
+                    if (!questionsResponse.data || !questionsResponse.data.response) {
+                        console.error('Nieprawidłowa odpowiedź z API:', questionsResponse);
+                        return;
                     }
+
+                    // Parsujemy odpowiedź z podwójnym JSON.parse (bo response jest stringiem zawierającym string JSON)
+                    const parsedResponse = JSON.parse(JSON.parse(questionsResponse.data.response));
+                    
+                    if (!parsedResponse.questions || !Array.isArray(parsedResponse.questions)) {
+                        console.error('Nieprawidłowy format pytań:', parsedResponse);
+                        return;
+                    }
+
+                    setQuestions({
+                        question1: parsedResponse.questions[0] || '',
+                        question2: parsedResponse.questions[1] || '',
+                        question3: parsedResponse.questions[2] || ''
+                    });
+                } catch (error) {
+                    console.error('Błąd podczas pobierania pytań:', error);
                 }
             } catch (error) {
                 console.error('Błąd podczas sprawdzania wpisów:', error);
