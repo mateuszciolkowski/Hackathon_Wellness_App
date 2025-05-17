@@ -16,11 +16,17 @@ function MainContent({ activeComponent }) {
     });
     const [questions, setQuestions] = useState({});
     const [hasEntries, setHasEntries] = useState(false);
+    const [questionsHistory, setQuestionsHistory] = useState([]);
 
     useEffect(() => {
         const checkAndFetchQuestions = async () => {
             try {
                 const response = await axios.get(ENDPOINTS.GET_ALL_DAYS);
+                const historyResponse = await axios.get(ENDPOINTS.GET_QUESTIONS_HISTORY);
+                
+                if (historyResponse.data) {
+                    setQuestionsHistory(historyResponse.data);
+                }
                 const todayEntries = response.data.filter(entry => {
                     const entryDate = new Date(entry.created_at).toDateString();
                     const today = new Date().toDateString();
@@ -123,6 +129,20 @@ function MainContent({ activeComponent }) {
                     <div className="welcome-section">
                         <h1>Witaj w swojej przestrzeni wellness</h1>
                         <p>Zadbaj o swoje samopoczucie z naszymi narzędziami</p>
+                        
+                        {questionsHistory.length > 0 && (
+                            <div className="history-preview">
+                                <h3>Twoje ostatnie odpowiedzi:</h3>
+                                <div className="history-items">
+                                    {questionsHistory.slice(0, 3).map((item, index) => (
+                                        <div key={index} className="history-item">
+                                            <p className="history-question">{item.question}</p>
+                                            <p className="history-answer">{item.answer}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                         
                         <div className="questions-section">
                             <h2>Pytania na dziś:</h2>
