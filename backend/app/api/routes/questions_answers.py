@@ -6,6 +6,7 @@ from ..schemas.question_answer import QuestionAnswerCreate, QuestionAnswerRespon
 from ..models.question_answer import QuestionAnswer
 from ..dependencies import get_db
 from app.models import Day
+from .chat import ChatResponse  # Dodaj ten import
 
 # Konfiguracja loggera
 logger = logging.getLogger(__name__)
@@ -96,4 +97,47 @@ def get_questions_history(diary_id: int, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=500,
             detail=f"Błąd podczas pobierania historii pytań: {str(e)}"
+        )
+
+
+@router.post("/psycho-analysis/{diary_id}", response_model=ChatResponse)
+def psycho_analysis(diary_id: int, db: Session = Depends(get_db)):
+    """
+    Analizuje historię pytań i odpowiedzi dla dziennika z perspektywy psychologicznej.
+    """
+    try:
+        # Pobierz historię pytań
+        questions = get_questions_history(diary_id, db)
+        
+        # Wczytaj prompt psychoanalityczny
+        with open('/Users/mciolkowski/Desktop/HACK/backend/prompts/pyscho_analtics.txt', 'r') as file:
+            psycho_prompt = file.read()
+        
+        # Przygotuj dane do analizy
+        analysis_data = psycho_prompt + "\n\nDane do analizy:\n"
+        for q in questions:
+            analysis_data += f"Pytanie: {q.question}\nOdpowiedź: {q.answer}\n\n"
+        
+        # Dodaj import klienta OpenAI
+        import openai
+        import os
+        from dotenv import load_dotenv
+        load_dotenv()
+        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        
+        # Wyślij do OpenAI
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "Jesteś analitykiem psychologicznym."},
+                {"role": "user", "content": analysis_data}
+            ]
+        )
+        
+        return ChatResponse(response=completion.choices[0].message.content)
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Błąd podczas analizy psychologicznej: {str(e)}"
         )
