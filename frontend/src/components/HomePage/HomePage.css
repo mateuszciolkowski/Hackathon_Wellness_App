@@ -217,23 +217,54 @@
 }
 
 .nav-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   border: none;
   border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
-  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  min-width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.nav-button i {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+.nav-button.pink {
+  background: linear-gradient(135deg, #FF69B4, #FF1493);
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
+
+.nav-button.orange {
+  background: linear-gradient(135deg, #FFA500, #FF8C00);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-button.green {
+  background: linear-gradient(135deg, #32CD32, #228B22);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+}
+
+.nav-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.icon-journal, .icon-reports, .icon-growth {
+  font-size: 1.4rem;
+  margin-right: 0.5rem;
+}
+
 
 .sections {
   margin-top: 4rem;

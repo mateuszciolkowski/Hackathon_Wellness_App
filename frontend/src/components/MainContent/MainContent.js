@@ -79,26 +79,40 @@ function MainContent({ activeComponent }) {
 
     const handleSubmitAll = async () => {
         try {
-            const questionsAnswers = Object.entries(questions).map(([key, question]) => ({
-                question: question,
-                answer: answers[key]
-            }));
-    
-            // Wysyłamy każde pytanie i odpowiedź osobno
-            for (const qa of questionsAnswers) {
-                const payload = {
-                    day_id: 5,
-                    questions_answers: [
-                        {
-                            question: qa.question,
-                            answer: qa.answer,
-                            day_id: 5
-                        }
-                    ]
-                };
-    
-                await axios.post(`${ENDPOINTS.CREATE_QUESTIONS_ANSWERS}`, payload);
+            // Sprawdzamy, czy wszystkie odpowiedzi są wypełnione
+            const allAnswersFilled = Object.values(answers).every(answer => answer.trim() !== '');
+            
+            if (!allAnswersFilled) {
+                alert('Proszę wypełnić wszystkie odpowiedzi przed wysłaniem.');
+                return;
             }
+
+            // Tworzymy tablicę wszystkich pytań i odpowiedzi
+            const questionsAnswers = [
+                {
+                    question: questions.question1,
+                    answer: answers.question1,
+                    day_id: 2
+                },
+                {
+                    question: questions.question2,
+                    answer: answers.question2,
+                    day_id: 2
+                },
+                {
+                    question: questions.question3,
+                    answer: answers.question3,
+                    day_id: 2
+                }
+            ];
+
+            // Wysyłamy wszystkie pytania i odpowiedzi w jednym żądaniu
+            const payload = {
+                day_id: 2,
+                questions_answers: questionsAnswers
+            };
+
+            await axios.post(ENDPOINTS.CREATE_QUESTIONS_ANSWERS, payload);
             
             // Czyszczenie formularza po udanym wysłaniu
             setAnswers({
@@ -106,9 +120,12 @@ function MainContent({ activeComponent }) {
                 question2: '',
                 question3: ''
             });
-    
+
+            // Opcjonalnie: pokaż komunikat o sukcesie
+            alert('Odpowiedzi zostały pomyślnie zapisane!');
         } catch (error) {
             console.error('Błąd podczas wysyłania odpowiedzi:', error);
+            alert('Wystąpił błąd podczas zapisywania odpowiedzi. Spróbuj ponownie.');
         }
     };
 

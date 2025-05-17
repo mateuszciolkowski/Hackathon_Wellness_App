@@ -3,19 +3,18 @@ import './Navbar.css';
 
 function Navbar({ onComponentChange }) {
   const handleChartClick = () => {
-    // Najpierw zmieniamy aktywny komponent na 'chart'
     onComponentChange('chart');
   };
 
   return (
     <nav className="navbar">
-      <button 
-        className="nav-button home" 
-        onClick={() => onComponentChange(null)}
-      >
-        Menu Główne
-      </button>
-      <div className="nav-icons">
+      <div className="nav-buttons">
+        <button 
+          className="nav-button home" 
+          onClick={() => onComponentChange(null)}
+        >
+          Codzienne Pytania
+        </button>
         <button 
           className="nav-button pink" 
           onClick={() => onComponentChange('diary')}
@@ -35,16 +34,16 @@ function Navbar({ onComponentChange }) {
           Moje wpisy
         </button>
         <button 
-          className="nav-button blue" alt="AI"
+          className="nav-button blue"
           onClick={() => onComponentChange('aiHandler')}
         >
-          AI Obsługa
+          AI Asystent
         </button>
         <button 
           className="nav-button purple" 
           onClick={handleChartClick}
         >
-          Wykresy
+          Statystyki
         </button>
       </div>
     </nav>
