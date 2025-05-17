@@ -8,31 +8,48 @@ function Diary() {
   const [newEntry, setNewEntry] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [mood, setMood] = useState(null);
+  const [fadeOut, setFadeOut] = useState(false);
+
+  const handleMoodSelection = (index) => {
+    setMood(index);
+    setFadeOut(true);
+    setTimeout(() => {
+      setShowModal(false);
+      setFadeOut(false);
+    }, 2000);
+  };
 
   const handleAddEntry = async (e) => {
     e.preventDefault();
-    if (newEntry.trim() === '') return;
+    if (newEntry.trim() === '' || mood === null) {
+      setError('Proszę wybrać nastrój i wpisać treść przed dodaniem wpisu.');
+      return;
+    }
 
     setIsSubmitting(true);
     setError(null);
 
     try {
       const entryData = {
-        user_id: 1, // Na razie ustawione na stałe
+        user_id: 1,
         main_entry: newEntry,
-        day_rating: 50 // Możesz dodać pole do oceny dnia w formularzu
+        day_rating: (mood * 20) // Zmiana z ((mood + 1) * 20) na (mood * 20)
       };
 
-      const response = await axios.post('/api/da', entryData);
+      const response = await axios.post(ENDPOINTS.CREATE_DAY, entryData);
       
       const entry = {
         id: response.data.id,
         text: newEntry,
-        date: new Date().toLocaleDateString('pl-PL')
+        date: new Date().toLocaleDateString('pl-PL'),
+        mood: ['😢', '😕', '😐', '🙂', '😊'][mood]
       };
 
       setEntries([entry, ...entries]);
       setNewEntry('');
+      setMood(null);
       setIsSubmitting(false);
     } catch (err) {
       setError('Nie udało się dodać wpisu. Spróbuj ponownie później.');
@@ -48,6 +65,30 @@ function Diary() {
       </div>
       
       <div className="diary-content">
+        <button onClick={() => setShowModal(true)} className="open-modal-btn">
+          {mood !== null ? ['😢', '😕', '😐', '🙂', '😊'][mood] : 'Wybierz nastrój'}
+        </button>
+        
+        {showModal && (
+          <div className={`modal ${fadeOut ? 'fade-out' : ''}`}>
+            <div className="modal-content">
+              <span className="close-btn" onClick={() => setShowModal(false)}>&times;</span>
+              <h2>Jak się dziś czujesz?</h2>
+              <div className="mood-options">
+                {['😢', '😕', '😐', '🙂', '😊'].map((emoji, index) => (
+                  <span
+                    key={index}
+                    className={`mood-option ${mood === index ? 'selected' : ''}`}
+                    onClick={() => handleMoodSelection(index)}
+                  >
+                    {emoji}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleAddEntry} className="entry-form">
           <textarea
             value={newEntry}
@@ -60,7 +101,7 @@ function Diary() {
           <button 
             type="submit" 
             className="add-entry-btn"
-            disabled={isSubmitting}
+            disabled={isSubmitting || mood === null}
           >
             {isSubmitting ? 'Dodawanie...' : 'Dodaj wpis'}
           </button>
@@ -70,6 +111,7 @@ function Diary() {
           {entries.map(entry => (
             <div key={entry.id} className="entry-item">
               <div className="entry-date">{entry.date}</div>
+              <div className="entry-mood">{entry.mood}</div>
               <div className="entry-text">{entry.text}</div>
             </div>
           ))}

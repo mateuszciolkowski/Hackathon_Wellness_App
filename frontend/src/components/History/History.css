@@ -36,6 +36,7 @@
 }
 
 .entry-card {
+  cursor: pointer;
   display: flex;
   gap: 1.5rem;
   background: rgba(255, 255, 255, 0.9);
@@ -124,4 +125,76 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  position: relative;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-entry-date {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.modal-entry-mood {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.modal-entry-content {
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 1rem 0;
+}
+
+.modal-entry-rating {
+  font-size: 1rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
 }

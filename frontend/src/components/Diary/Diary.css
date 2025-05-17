@@ -144,3 +144,96 @@
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.modal.fade-out {
+  opacity: 0;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.mood-options {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.5rem;
+}
+
+.mood-option {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0.5rem;
+}
+
+.mood-option:hover {
+  transform: scale(1.2);
+}
+
+.mood-option.selected {
+  transform: scale(1.2);
+  position: relative;
+}
+
+.mood-option.selected::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #FF69B4;
+  border-radius: 50%;
+}
+
+.open-modal-btn {
+  background: white;
+  border: 2px solid #FFB6C1;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.open-modal-btn:hover {
+  background: #FFB6C1;
+  color: white;
+}
+
+.entry-mood {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
