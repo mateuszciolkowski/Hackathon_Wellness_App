@@ -1,7 +1,7 @@
 import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional  # Dodano import Optional
 from datetime import date
 from pydantic import BaseModel  # Dodajemy import BaseModel
 from ..schemas.question_answer import QuestionAnswerCreate, QuestionAnswerResponse, QuestionsAnswersCreate
@@ -64,6 +64,7 @@ class DayQuestionsResponse(BaseModel):
     day_id: int
     created_at: date
     day_rating: int
+    main_entry: Optional[str]
     questions: List[QuestionAnswerResponse]
 
 @router.get("/history/{diary_id}", response_model=List[DayQuestionsResponse])
@@ -97,6 +98,7 @@ def get_questions_history(diary_id: int, db: Session = Depends(get_db)):
                     "day_id": day.id,
                     "created_at": day.created_at,
                     "day_rating": day.day_rating,
+                    "main_entry": day.main_entry,
                     "questions": questions
                 })
         

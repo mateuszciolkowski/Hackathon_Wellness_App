@@ -168,8 +168,8 @@ async def analyze_mood(request: AnalyzeAnswersRequest, db: Session = Depends(get
 class DailyAdviceRequest(BaseModel):
     user_id: int
 
-@router.post("/daily-advice", response_model=ChatResponse)
-async def get_daily_advice(request: DailyAdviceRequest, db: Session = Depends(get_db)):
+@router.get("/daily-advice", response_model=ChatResponse)
+async def get_daily_advice(db: Session = Depends(get_db)):
     try:
         # Statyczny prompt dla generowania codziennej rady
         prompt = """Wygeneruj krótką, jedną zdaniową radę dotyczącą zdrowia psychicznego na dzisiaj. 
@@ -190,4 +190,33 @@ async def get_daily_advice(request: DailyAdviceRequest, db: Session = Depends(ge
         raise HTTPException(
             status_code=500,
             detail=f"Błąd podczas generowania codziennej rady: {str(e)}"
+        )
+
+@router.post("/send", response_model=ChatResponse)
+async def send_message(message: ChatMessage):
+    try:
+        # Statyczny prompt psychologiczny
+        psycho_prompt = """Jestem twoim osobistym asystentem psychologicznym. Pomogę ci przeanalizować twoje samopoczucie i emocje. Będę odpowiadał w sposób empatyczny i wspierający, zawsze z troską o twoje dobro. Skupię się na twoich uczuciach i pomogę ci lepiej je zrozumieć."""
+        
+        # Przygotuj kontekst dla OpenAI
+        messages = [
+            {"role": "system", "content": psycho_prompt},
+            {"role": "user", "content": message.prompt}
+        ]
+        
+        # Wyślij do OpenAI
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+        
+        # Pobierz odpowiedź AI
+        ai_response = completion.choices[0].message.content
+        
+        return ChatResponse(response=ai_response)
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Błąd podczas komunikacji z OpenAI: {str(e)}"
         )
