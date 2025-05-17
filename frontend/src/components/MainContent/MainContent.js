@@ -17,7 +17,8 @@ function MainContent({ activeComponent }) {
     const [questions, setQuestions] = useState({});
     const [hasEntries, setHasEntries] = useState(false);
     const [questionsHistory, setQuestionsHistory] = useState([]);
-
+    const [currentDayId, setCurrentDayId] = useState(null);
+    
     useEffect(() => {
         const checkAndFetchQuestions = async () => {
             try {
@@ -79,36 +80,53 @@ function MainContent({ activeComponent }) {
 
     const handleSubmitAll = async () => {
         try {
-            const questionsAnswers = Object.entries(questions).map(([key, question]) => ({
-                question: question,
-                answer: answers[key]
-            }));
-    
-            // Wysyłamy każde pytanie i odpowiedź osobno
-            for (const qa of questionsAnswers) {
-                const payload = {
-                    day_id: 5,
-                    questions_answers: [
-                        {
-                            question: qa.question,
-                            answer: qa.answer,
-                            day_id: 5
-                        }
-                    ]
-                };
-    
-                await axios.post(`${ENDPOINTS.CREATE_QUESTIONS_ANSWERS}`, payload);
+            if (!currentDayId) {
+                alert('Najpierw dodaj wpis dzienny przed dodaniem odpowiedzi na pytania.');
+                return;
             }
+
+            const allAnswersFilled = Object.values(answers).every(answer => answer.trim() !== '');
             
-            // Czyszczenie formularza po udanym wysłaniu
+            if (!allAnswersFilled) {
+                alert('Proszę wypełnić wszystkie odpowiedzi przed wysłaniem.');
+                return;
+            }
+
+            const questionsAnswers = [
+                {
+                    question: questions.question1,
+                    answer: answers.question1,
+                    day_id: currentDayId
+                },
+                {
+                    question: questions.question2,
+                    answer: answers.question2,
+                    day_id: currentDayId
+                },
+                {
+                    question: questions.question3,
+                    answer: answers.question3,
+                    day_id: currentDayId
+                }
+            ];
+
+            const payload = {
+                day_id: currentDayId,
+                questions_answers: questionsAnswers
+            };
+
+            await axios.post(ENDPOINTS.CREATE_QUESTIONS_ANSWERS, payload);
+            
             setAnswers({
                 question1: '',
                 question2: '',
                 question3: ''
             });
-    
+
+            alert('Odpowiedzi zostały pomyślnie zapisane!');
         } catch (error) {
             console.error('Błąd podczas wysyłania odpowiedzi:', error);
+            alert('Wystąpił błąd podczas zapisywania odpowiedzi. Spróbuj ponownie.');
         }
     };
 
@@ -117,7 +135,7 @@ function MainContent({ activeComponent }) {
             case 'chart':
                 return <div className="chart-section"><ChartView /></div>;
             case 'diary':
-                return <div className="diary-section"><Diary /></div>;
+                return <div className="diary-section"><Diary currentDayId={currentDayId} setCurrentDayId={setCurrentDayId} /></div>;
             case 'user':
                 return <div className="user-section"><User /></div>;
             case 'history':
@@ -127,7 +145,7 @@ function MainContent({ activeComponent }) {
             default:
                 return (
                     <div className="welcome-section">
-                        <h1>Witaj w swojej przestrzeni wellness</h1>
+                        <h1>Witaj w swojej przestrzeni <span className="brand-name2">Wellness</span></h1>
                         <p>Zadbaj o swoje samopoczucie z naszymi narzędziami</p>
                         
                         {questionsHistory.length > 0 && (

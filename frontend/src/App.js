@@ -5,6 +5,7 @@ import TopNav from './components/TopNav/TopNav';
 import Navbar from './components/Navbar/Navbar';
 import MainContent from './components/MainContent/MainContent';
 import LoginModal from './components/LoginModal/LoginModal';
+import RegisterModal from './components/LoginModal/RegisterModal';
 import { isAuthenticated, getUser, logout } from './utils/authUtils';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [activeComponent, setActiveComponent] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   // Efekt, który będzie wykonywany przy montowaniu komponentu
   useEffect(() => {
@@ -48,9 +50,18 @@ function App() {
     setShowLoginModal(false);
   };
 
+  const handleRegisterClick = () => {
+    setShowRegisterModal(true);
+  };
+
   return (
     <div className="App">
-      {!isLoggedIn && <TopNav onLoginClick={handleLoginClick} isLoggedIn={isLoggedIn} user={user} />}
+      {!isLoggedIn && <TopNav 
+        onLoginClick={handleLoginClick} 
+        onRegisterClick={handleRegisterClick}
+        isLoggedIn={isLoggedIn} 
+        user={user} 
+      />}
       {isLoggedIn ? (
         <>
           <Navbar onComponentChange={setActiveComponent} />
@@ -63,6 +74,11 @@ function App() {
         <LoginModal 
           onClose={handleCloseModal} 
           onLoginSuccess={handleLoginSuccess} 
+        />
+      )}
+      {showRegisterModal && (
+        <RegisterModal 
+          onClose={() => setShowRegisterModal(false)}
         />
       )}
     </div>

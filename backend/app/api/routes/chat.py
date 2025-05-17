@@ -40,7 +40,7 @@ async def send_message(message: ChatMessage, db: Session = Depends(get_db)):
         ).order_by(Message.created_at).all()
         
         # Wczytaj prompt psychologiczny - zamiana na statyczny prompt
-        psycho_prompt = """Jestem twoim osobistym asystentem psychologicznym. Pomogę ci przeanalizować twoje samopoczucie i emocje. Będę odpowiadał w sposób empatyczny i wspierający, zawsze z troską o twoje dobro. Skupię się na twoich uczuciach i pomogę ci lepiej je zrozumieć."""
+        psycho_prompt = """Jestem osoba ktora zawsze chetnie z tobą porozmawia. Pomogę ci przeanalizować twoje samopoczucie i emocje. Będę odpowiadał w sposób empatyczny i wspierający, zawsze z troską o twoje dobro. Skupię się na twoich uczuciach i pomogę ci lepiej je zrozumieć."""
         
         # Przygotuj kontekst dla OpenAI
         messages = [

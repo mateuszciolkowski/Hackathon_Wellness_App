@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Diary.css';
 import { ENDPOINTS } from '../../config';
 
-function Diary() {
+function Diary({ currentDayId, setCurrentDayId }) {
   const [entries, setEntries] = useState([]);
   const [newEntry, setNewEntry] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,10 +35,11 @@ function Diary() {
       const entryData = {
         user_id: 1,
         main_entry: newEntry,
-        day_rating: (mood * 20) // Zmiana z ((mood + 1) * 20) na (mood * 20)
+        day_rating: (mood * 20)
       };
 
       const response = await axios.post(ENDPOINTS.CREATE_DAY, entryData);
+      setCurrentDayId(response.data.id); // Ustawiamy ID nowo utworzonego dnia
       
       const entry = {
         id: response.data.id,

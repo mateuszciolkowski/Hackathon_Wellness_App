@@ -10,6 +10,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+
 .ai-history-section {
   flex: 1;
   margin-bottom: 1rem;
@@ -84,7 +85,6 @@
 .message-header {
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #666;
   font-size: 0.9rem;
 }
 
@@ -123,5 +123,61 @@
 
 .ai-submit-btn:hover {
   background: #1976D2;
+}
+
+
+.ai-message.user {
+  background-color: #e3f2fd;
+  border-radius: 15px 15px 0 15px;
+  align-self: flex-end;
+  max-width: 80%;
+}
+
+.ai-message.assistant {
+  background-color: #f1f1f1;
+  border-radius: 15px 15px 15px 0;
+  align-self: flex-start;
+  max-width: 80%;
+}
+
+.message-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message-content {
+  word-wrap: break-word;
+}
+.ai-message.user .message-header {
+  text-align: right;
+  margin-left: auto;
+}
+
+.ai-message.assistant .message-header {
+  text-align: left;
+  margin-right: auto;
+}
+
+.ai-message.user {
+  background-color: transparent;
+  border-radius: 15px 15px 0 15px;
+  align-self: flex-end;
+  max-width: 80%;
+}
+
+.ai-message.assistant {
+  background-color: transparent;
+  border-radius: 15px 15px 15px 0;
+  align-self: flex-start;
+  max-width: 80%;
+}
+
+.message-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message-content {
+  word-wrap: break-word;
 }
   
