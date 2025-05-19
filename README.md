@@ -22,7 +22,7 @@ Każdego dnia aplikacja, z wykorzystaniem sztucznej inteligencji, analizuje osta
 Użytkownik odpowiada na nie, a odpowiedzi są przetwarzane przez algorytm, który ocenia aktualne samopoczucie w skali od 1 do 100.
 
 Wyniki zapisywane są w bazie danych, co umożliwia tworzenie wykresu nastroju – pozwalającego śledzić zmiany samopoczucia w czasie.
-
+Dodatkowo użytkownik może przeglądać historię wpisów w pamiętniku, co umożliwia śledzenie swoich zmian w samopoczucie. Zapewniliśmy równiez dla uztykownika mozliwosc rozmowy z witrualnym psychologiem dzialajacego w oparciu o sztuczna inteligencje za pośrednictwem czatu.
 ---
 
 ## 📊 Planowany rozwój
@@ -47,6 +47,12 @@ Raporty mogą również stanowić cenne wsparcie w kontaktach z psychologiem lub
 | **Baza danych** | PostgreSQL         |
 | **Inne**     | Docker                |
 
+---
+
+
+## 📸 Zrzuty ekranu
+
+[![Zobacz galerię](gallery/powitalna.png)](images/gallery.md)
 ---
 
 🧘 *Wellness – bo każdy dzień zasługuje na chwilę refleksji.*
