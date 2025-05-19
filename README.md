@@ -52,7 +52,10 @@ Raporty mogą również stanowić cenne wsparcie w kontaktach z psychologiem lub
 
 ## 📸 Zrzuty ekranu
 
-[![Zobacz galerię](images/powitalna.png)](images/gallery.md)
+
+[Kliknij tutaj, aby przejść do galerii](images/gallery.md)
+
+![Ekran powitalny](images/powitalna.png)
 ---
 
 🧘 *Wellness – bo każdy dzień zasługuje na chwilę refleksji.*
