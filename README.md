@@ -54,7 +54,7 @@ Raporty mogą również stanowić cenne wsparcie w kontaktach z psychologiem lub
 
 
 
-[Kliknij tutaj, aby zobaczyć jak wygląda aplikacja!](images/gallery.md)
+[Kliknij tutaj, aby zobaczyć jak wygląda aplikacja!](images/images.md)
 
 ![Ekran powitalny](images/powitalna.png)
 ---
