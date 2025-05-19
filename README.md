@@ -53,7 +53,8 @@ Raporty mogą również stanowić cenne wsparcie w kontaktach z psychologiem lub
 ## 📸 Zrzuty ekranu
 
 
-[Kliknij tutaj, aby przejść do galerii](images/gallery.md)
+
+[Kliknij tutaj, aby zobaczyć jak wygląda aplikacja!](images/gallery.md)
 
 ![Ekran powitalny](images/powitalna.png)
 ---
