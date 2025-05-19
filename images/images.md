@@ -3,10 +3,10 @@
 ## Widok główny
 ![Widok główny](powitalna.png)
 
-## Wykres historii wpisów
+## Widok historii wpisów
 ![Wykres nastroju](wpisy.png)
 
-## Wykres dodania wpisów
+## Widok dodania wpisów
 ![Wykres nastroju](pamietnik.png)
 
 ## Widok chatu
