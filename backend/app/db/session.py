@@ -2,12 +2,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 import logging
 from sqlalchemy.exc import OperationalError
+import os
 
 # Konfiguracja loggera
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:admin@127.0.0.1:5432/mental"
+# Pobierz URL bazy danych z zmiennej środowiskowej lub użyj domyślnego
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@db:5432/postgres")
+SQLALCHEMY_DATABASE_URL = DATABASE_URL
 
 try:
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
