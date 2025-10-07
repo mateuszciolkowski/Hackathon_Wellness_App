@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     restart: always
-    command: bash -c "while !</dev/tcp/db/5432; do sleep 1; done; python main.py"
+    command: bash -c "while !</dev/tcp/db/5432; do sleep 1; done; python app/main.py"
 
   frontend:
     build:
