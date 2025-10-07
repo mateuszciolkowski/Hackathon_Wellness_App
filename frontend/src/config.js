@@ -1,4 +1,5 @@
-export const API_URL = 'https://tg4n8lh6-8000.euw.devtunnels.ms';
+// export const API_URL = 'https://zwf46srx-3000.euw.devtunnels.ms/';
+export const API_URL = 'http://localhost:8000/api/';
 
 export const ENDPOINTS = {
   GET_ALL_DAYS: `${API_URL}/api/questions_answers/history/1`,
