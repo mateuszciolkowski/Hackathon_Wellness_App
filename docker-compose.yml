@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build:
@@ -11,7 +13,7 @@ services:
     depends_on:
       - db
     restart: always
-    command: bash -c "while !</dev/tcp/db/5432; do sleep 1; done; python app/main.py"
+    command: bash -c "while !</dev/tcp/db/5432; do sleep 1; done; python main.py"
 
   frontend:
     build:
@@ -20,6 +22,8 @@ services:
       - "3001:3000"
     environment:
       - REACT_APP_API_URL=http://backend:8000
+      - HOST=0.0.0.0
+      - DANGEROUSLY_DISABLE_HOST_CHECK=true
     depends_on:
       - backend
     restart: always
