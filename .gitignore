@@ -191,6 +191,7 @@ backend/.pytype/
 backend/.pyre/
 backend/.env
 .env
+.env.copy
 .venv
 env/
 ENV/
