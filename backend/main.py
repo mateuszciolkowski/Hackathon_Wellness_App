@@ -7,14 +7,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Tworzymy wszystkie tabele w bazie danych
-try:
-    Base.metadata.create_all(bind=engine)
-    logger.info("Tabele zostały utworzone pomyślnie")
-except Exception as e:
-    logger.error(f"Błąd podczas tworzenia tabel: {str(e)}")
-
-
 
 app = FastAPI(
     title="Diary API",
