@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from app.api import diaries, days, questions_answers, avatars
-from app.db.session import engine, Base
+from app.db.session import engine
 from app.api.routes import chart, users
+from app.api.models import Base
 
 Base.metadata.create_all(bind=engine)
 

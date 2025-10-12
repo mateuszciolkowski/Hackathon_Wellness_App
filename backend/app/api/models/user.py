@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.orm import relationship
 from .base import Base
 
@@ -9,7 +9,7 @@ class User(Base):
     name = Column(String(100), nullable=False)
     nickname = Column(String(100), unique=True, nullable=False)
     email = Column(String(255), unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
+    password_hash = Column(Text, nullable=False)
     birth_year = Column(Integer, nullable=False)
 
     diaries = relationship("Diary", back_populates="user", cascade="all, delete")
