@@ -1,42 +1,66 @@
-version: '3.8'
-
 services:
   backend:
     build:
       context: ./backend
     ports:
-      - "8001:8000"
+      # Użycie zmiennych dla mapowania portów
+      - "${HOST_BACKEND_PORT}:${BACKEND_INTERNAL_PORT}" 
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      # Użycie zmiennych dla połączenia z DB
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     depends_on:
       - db
-    restart: always
-    command: bash -c "while !</dev/tcp/db/5432; do sleep 1; done; python main.py"
+    restart: no
+    command: bash -c "while !</dev/tcp/db/${DB_PORT}; do sleep 1; done; python main.py"
 
   frontend:
     build:
       context: ./frontend
     ports:
-      - "3001:3000"
+      # Użycie zmiennych dla mapowania portów
+      - "${HOST_FRONTEND_PORT}:${FRONTEND_INTERNAL_PORT}"
     environment:
-      - REACT_APP_API_URL=http://backend:8000
+      # Użycie zmiennych dla adresu API
+      - REACT_APP_API_URL=http://localhost:${HOST_BACKEND_PORT}
       - HOST=0.0.0.0
       - DANGEROUSLY_DISABLE_HOST_CHECK=true
     depends_on:
       - backend
-    restart: always
+    restart: no
 
   db:
     image: postgres:17-alpine
     volumes:
       - postgres_:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      # Użycie zmiennych dla konfiguracji bazy danych
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
-      - "5433:5432"
-    restart: always
+      # Użycie zmiennych dla mapowania portów
+      - "${HOST_DB_PORT}:${DB_PORT}"
+    restart: no
 
+  pgadmin:
+      image: dpage/pgadmin4
+      environment:
+        # Dane logowania do interfejsu webowego pgAdmin
+        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-pgadmin@example.com}
+        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+        # Automatyczne dodanie serwera PostgreSQL (opcjonalne, ale bardzo wygodne)
+        PGADMIN_CONFIG_SERVER_MODE: 'False' 
+        PGADMIN_CONFIG_MIN_LABEL_LENGTH: 0
+      ports:
+        # Wystawienie pgAdmin na porcie HOST_PGADMIN_PORT (np. 5050)
+        - "${HOST_PGADMIN_PORT:-5050}:80" 
+      depends_on:
+        - db # pgAdmin musi czekać na start bazy danych
+      volumes:
+        - pgadmin_data:/var/lib/pgadmin
+      restart: unless-stopped # Zapewnia restart po awarii
+      
 volumes:
   postgres_:
+  pgadmin_data:
