@@ -29,19 +29,6 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if existing_nickname:
         raise HTTPException(status_code=400, detail="Nickname już zajęty")
     
-    # Walidacja hasła
-    if len(user.password) < 6:
-        raise HTTPException(status_code=400, detail="Hasło musi mieć co najmniej 6 znaków")
-    
-    # Walidacja emaila
-    if "@" not in user.email or "." not in user.email:
-        raise HTTPException(status_code=400, detail="Nieprawidłowy format emaila")
-    
-    # Walidacja roku urodzenia
-    current_year = datetime.now().year
-    if user.birth_year < 1900 or user.birth_year > current_year:
-        raise HTTPException(status_code=400, detail="Nieprawidłowy rok urodzenia")
-    
     # Użyj funkcji create_user z crud/users.py
     return users.create_user(db=db, user=user)
 
