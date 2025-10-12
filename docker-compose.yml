@@ -9,6 +9,8 @@ services:
       # Użycie zmiennych dla połączenia z DB
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - FRONTEND_URL_HTTP=${FRONTEND_URL_HTTP}
+      - FRONTEND_URL_HTTPS=${FRONTEND_URL_HTTPS}
     depends_on:
       - db
     restart: no

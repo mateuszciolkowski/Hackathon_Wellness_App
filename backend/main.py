@@ -21,34 +21,30 @@ app = FastAPI(
     version="1.0.0"
 )
 
+FRONTEND_HTTP = os.getenv("FRONTEND_URL_HTTP", "")
+FRONTEND_HTTPS = os.getenv("FRONTEND_URL_HTTPS", "")
+
+LOCAL_HTTP = "http://localhost:3001"
+LOCAL_IP = "http://127.0.0.1:3001" 
+
 origins = [
-    "http://localhost:3000/",
-    "http://127.0.0.1:3000/",
-    "FRONTEND_URL_HTTP",
-    "FRONTEND_URL_HTTPS",
-    "*"  # UWAGA: pozwala na wszystko (OK w dev, nie w produkcji)
+    origin for origin in [FRONTEND_HTTP, FRONTEND_HTTPS, LOCAL_HTTP, LOCAL_IP] if origin
 ]
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,            # Skąd można się łączyć
-#     allow_credentials=True,
-#     allow_methods=["*"],              # Jakie metody są dozwolone (GET, POST, itd.)
-#     allow_headers=["*"],              # Jakie nagłówki są dozwolone (np. Authorization)
-# )
+origins_normalized = set()
+for url in origins:
+    origins_normalized.add(url)
+    if url.endswith('/'):
+         origins_normalized.add(url[:-1])
+
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    # allow_origins=[
-    #     "http://localhost:3000",
-    #     "http://127.0.0.1:3000",
-    #     "https://tg4n8lh6-8000.euw.devtunnels.ms",  # ← dodaj DevTunnel jako origin
-    # ],
+    allow_origins=list(origins_normalized), # Przekazanie listy unikalnych domen
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    max_age = 3600
 )
 
 
