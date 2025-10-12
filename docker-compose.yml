@@ -22,7 +22,7 @@ services:
       - "${HOST_FRONTEND_PORT}:${FRONTEND_INTERNAL_PORT}"
     environment:
       # Użycie zmiennych dla adresu API
-      - BACKEND_URL=${API_SERVER_URL:-http://localhost:8001}
+      - REACT_APP_API_URL=${API_SERVER_URL:-http://localhost:8001}
       - HOST=0.0.0.0
       - DANGEROUSLY_DISABLE_HOST_CHECK=true
     depends_on:

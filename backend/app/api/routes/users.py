@@ -14,6 +14,37 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter()
 
+@router.post("/register", response_model=UserResponse)
+def register_user(user: UserCreate, db: Session = Depends(get_db)):
+    """
+    Rejestracja nowego użytkownika
+    """
+    # Sprawdź, czy użytkownik o takim emailu już istnieje
+    db_user = users.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email już zarejestrowany")
+    
+    # Sprawdź, czy nickname jest już zajęty
+    existing_nickname = db.query(User).filter(User.nickname == user.nickname).first()
+    if existing_nickname:
+        raise HTTPException(status_code=400, detail="Nickname już zajęty")
+    
+    # Walidacja hasła
+    if len(user.password) < 6:
+        raise HTTPException(status_code=400, detail="Hasło musi mieć co najmniej 6 znaków")
+    
+    # Walidacja emaila
+    if "@" not in user.email or "." not in user.email:
+        raise HTTPException(status_code=400, detail="Nieprawidłowy format emaila")
+    
+    # Walidacja roku urodzenia
+    current_year = datetime.now().year
+    if user.birth_year < 1900 or user.birth_year > current_year:
+        raise HTTPException(status_code=400, detail="Nieprawidłowy rok urodzenia")
+    
+    # Użyj funkcji create_user z crud/users.py
+    return users.create_user(db=db, user=user)
+
 @router.post("/", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # Sprawdź, czy użytkownik o takim emailu już istnieje

@@ -1,5 +1,5 @@
 // Używa zmiennej środowiskowej REACT_APP_API_URL, domyślnie localhost:8001
-export const API_URL = process.env.BACKEND_URL || 'http://localhost:8001';
+export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001';
 
 export const ENDPOINTS = {
   GET_ALL_DAYS: `${API_URL}/api/questions_answers/history/1`,
