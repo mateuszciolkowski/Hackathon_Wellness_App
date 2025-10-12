@@ -24,7 +24,8 @@ app = FastAPI(
 origins = [
     "http://localhost:3000/",
     "http://127.0.0.1:3000/",
-    
+    "FRONTEND_URL_HTTP",
+    "FRONTEND_URL_HTTPS",
     "*"  # UWAGA: pozwala na wszystko (OK w dev, nie w produkcji)
 ]
 
